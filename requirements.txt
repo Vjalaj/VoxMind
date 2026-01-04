@@ -9,7 +9,11 @@
 # yash section
 # yash can add his requirements here
 
+<<<<<<< HEAD
 # Sumant section
 # Sumant can add his requirements here
 
 # End of yash section
+=======
+# End of yash section
+>>>>>>> 931ebb5293a8365effacdf3e57f6ceaff2bc77d2
