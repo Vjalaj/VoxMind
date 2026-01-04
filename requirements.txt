@@ -1,6 +1,15 @@
 # Base requirements
 # Add common packages here
 
+# Jalaj section
+# Jalaj can add his requirements here
+
+# End of Jalaj section
+
+# yash section
+# yash can add his requirements here
+
 # Sumant section
 # Sumant can add his requirements here
 
+# End of yash section
