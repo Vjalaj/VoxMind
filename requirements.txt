@@ -1,8 +1,7 @@
 # Base requirements
 # Add common packages here
 
-# User1 section
-# User1 can add his requirements here
+# Jalaj section
+# Jalaj can add his requirements here
 
-# User2 section
-# User2 can add his requirements here
+# End of Jalaj section
