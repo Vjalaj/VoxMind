@@ -6,6 +6,21 @@
 
 # End of Jalaj section
 
+# Swadhin section
+# Swadhin can add his requirements here
+
+# End of Swadhin section
+
+# Soumyadeb section
+# Soumyadeb can add his requirements here
+
+# End of Soumyadeb section
+
+# Priyapal section
+# Priyapal can add his requirements here
+
+# End of Priyapal section
+
 # yash section
 # yash can add his requirements here
 
