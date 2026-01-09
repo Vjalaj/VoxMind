@@ -1,38 +1,53 @@
 """
-jarvis_assistant.py
+command_parser.py
 
-Single-file assistant combining:
-- Command parser (regex + fast-fail + wake word support)
-- Simple Windows-focused execution stubs
-- TTS/ASR glue
-- Small test harness
+Text-only command parser for a Jarvis-like assistant.
 
-Requires:
-    pip install SpeechRecognition pyttsx3 pyaudio
+Responsibilities
+----------------
+- Take raw text from ASR or typed input (already handled elsewhere).
+- Normalize it.
+- Map it to a high-level command (intent) and structured parameters.
+- Stay OS-agnostic and IO-free: NO audio, NO TTS, NO system calls.
+
+Public API
+----------
+- parse_command(text: str) -> dict
+    Returns a dict with keys:
+      - 'command': a string identifier
+      - 'params': a dict with extracted parameters
+
+Example intents
+---------------
+- open_browser: "open the browser", "launch chrome"
+- search: "search for python", "google nearest cafe"
+- get_time: "what time is it", "what's the date today"
+- system_power: "shut down", "restart", "sleep", "lock screen"
+- control_volume: "mute", "set volume to 50 percent", "volume up"
+- control_app: "open vscode", "close spotify"
+- open_path: "open downloads folder", "open file report.docx"
+- assistant_help: "what can you do", "who are you"
+- navigate: "go back", "go home", "show notifications", "show recent apps"
+- media_control: "play", "pause", "next song", "previous track"
+- scroll: "scroll down", "scroll up", "scroll to top", "scroll to bottom"
+
+Wake word
+---------
+- If text starts with "jarvis", "hey jarvis", or "ok jarvis", that prefix
+  is stripped before parsing.
+- The caller (main.py, wake-word detector, etc.) should decide when to call
+  parse_command; this file only handles text → {command, params}.
 """
 
 from __future__ import annotations
 
-import os
 import re
-import sys
-import time
-import traceback
-import webbrowser
-import subprocess
-from typing import Dict, Any, Callable, Match, List, Tuple, Optional
-
-import speech_recognition as sr  # type: ignore
-try:
-    import pyttsx3  # type: ignore
-except Exception:
-    pyttsx3 = None  # type: ignore
-
-# ============================================================
-# Command parser
-# ============================================================
+from typing import Dict, Any, Callable, Match, List, Tuple
 
 ParamsFn = Callable[[Match[str]], Dict[str, Any]]
+
+
+# -------------------- Param extractors --------------------
 
 
 def _noop_params(_: Match[str]) -> Dict[str, Any]:
@@ -123,6 +138,71 @@ def _help_params(_: Match[str]) -> Dict[str, Any]:
     return {}
 
 
+def _navigate_params(match: Match[str]) -> Dict[str, Any]:
+    """
+    Map navigation phrases to actions:
+    - back
+    - home
+    - notifications
+    - recents
+    """
+    text = match.group(0).lower()
+
+    if "back" in text:
+        return {"action": "back"}
+    if "home" in text:
+        return {"action": "home"}
+    if "notification" in text:
+        return {"action": "notifications"}
+    if "recent" in text:
+        return {"action": "recents"}
+
+    return {"action": None}
+
+
+def _media_params(match: Match[str]) -> Dict[str, Any]:
+    """
+    Map media phrases to actions:
+    - play / pause / stop / next / previous
+    """
+    text = match.group(0).lower()
+
+    if "play" in text and "pause" not in text:
+        return {"action": "play"}
+    if "pause" in text:
+        return {"action": "pause"}
+    if "stop" in text:
+        return {"action": "stop"}
+    if any(k in text for k in ("next", "skip")):
+        return {"action": "next"}
+    if any(k in text for k in ("previous", "prev", "back")):
+        return {"action": "previous"}
+
+    return {"action": None}
+
+
+def _scroll_params(match: Match[str]) -> Dict[str, Any]:
+    """
+    Map scroll phrases to direction:
+    - up / down / top / bottom
+    """
+    text = match.group(0).lower()
+
+    if "to top" in text or "top" in text:
+        return {"direction": "top"}
+    if "to bottom" in text or "bottom" in text:
+        return {"direction": "bottom"}
+    if "up" in text:
+        return {"direction": "up"}
+    if "down" in text:
+        return {"direction": "down"}
+
+    return {"direction": None}
+
+
+# -------------------- Normalization --------------------
+
+
 def normalize_text(text: str) -> str:
     if not text:
         return ""
@@ -130,8 +210,12 @@ def normalize_text(text: str) -> str:
     text = re.sub(r"\s+", " ", text)
     return text.strip("\n\t \"'.,?!")
 
-# Regex patterns
+
+# -------------------- Patterns --------------------
+
+
 PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
+    # Open browser
     (
         re.compile(
             r"\b(?:open|launch|start|run)\s+(?:the\s+)?"
@@ -142,6 +226,8 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         "open_browser",
         _browser_params,
     ),
+
+    # Search
     (
         re.compile(
             r"\b(?:search for|search|google|look up|lookup|find|find me|look for)\b\s+(?P<query>[^\n\r]+)",
@@ -150,6 +236,8 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         "search",
         _search_params,
     ),
+
+    # Time / date
     (
         re.compile(
             r"\b(?:(what(?:'s| is)? the time|what time is it|tell me the time|current time|time now|"
@@ -159,6 +247,8 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         "get_time",
         _noop_params,
     ),
+
+    # System power
     (
         re.compile(
             r"(?:(?P<shutdown>\b(?:shutdown|shut down|power off|turn off)\b)|"
@@ -170,11 +260,15 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         "system_power",
         _system_power_params,
     ),
+
+    # Volume / audio
     (
         re.compile(r"\b(?:volume|sound|audio|mute|unmute)\b.*", re.I),
         "control_volume",
         _volume_params,
     ),
+
+    # App control
     (
         re.compile(
             r"\b(?P<app_action>open|start|launch|run|close|quit|exit|stop)\b\s+"
@@ -184,6 +278,8 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         "control_app",
         _app_params,
     ),
+
+    # File / folder
     (
         re.compile(
             r"\b(?:open|show|reveal)\b\s+(?:the\s+)?"
@@ -193,6 +289,8 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         "open_path",
         _file_params,
     ),
+
+    # Help / about
     (
         re.compile(
             r"\b(?:help|what can you do|what are your capabilities|who are you|what is this|what are you)\b",
@@ -201,7 +299,41 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         "assistant_help",
         _help_params,
     ),
+
+    # Navigation (back, home, notifications, recents)
+    (
+        re.compile(
+            r"\b(?:go back|back|go home|home|show notifications|notifications|show recent apps|recent apps)\b",
+            re.I,
+        ),
+        "navigate",
+        _navigate_params,
+    ),
+
+    # Media control (play, pause, next, previous)
+    (
+        re.compile(
+            r"\b(?:play|pause|resume|stop|next (?:song|track)?|previous (?:song|track)?|prev(?:ious)? track?)\b",
+            re.I,
+        ),
+        "media_control",
+        _media_params,
+    ),
+
+    # Scroll
+    (
+        re.compile(
+            r"\b(?:scroll (?:up|down|to the top|to top|to the bottom|to bottom)|scroll up|scroll down)\b",
+            re.I,
+        ),
+        "scroll",
+        _scroll_params,
+    ),
 ]
+
+
+# -------------------- Fast-fail keyword index --------------------
+
 
 KEYWORD_INDEX = {
     "browser": ("open_browser",),
@@ -240,10 +372,44 @@ KEYWORD_INDEX = {
     "help": ("assistant_help",),
     "capabilities": ("assistant_help",),
     "who are you": ("assistant_help",),
+
+    # Navigation
+    "go back": ("navigate",),
+    "back": ("navigate",),
+    "go home": ("navigate",),
+    "home": ("navigate",),
+    "notifications": ("navigate",),
+    "recent apps": ("navigate",),
+    "recent": ("navigate",),
+
+    # Media
+    "play": ("media_control",),
+    "pause": ("media_control",),
+    "resume": ("media_control",),
+    "next": ("media_control",),
+    "previous": ("media_control",),
+    "prev": ("media_control",),
+    "song": ("media_control",),
+    "track": ("media_control",),
+
+    # Scroll
+    "scroll": ("scroll",),
+    "up": ("scroll",),
+    "down": ("scroll",),
+    "top": ("scroll",),
+    "bottom": ("scroll",),
 }
 
 
+# -------------------- Main parse function --------------------
+
+
 def parse_command(text: str) -> Dict[str, Any]:
+    """
+    Parse text into {'command': <id>, 'params': {...}}.
+
+    This function is pure and side-effect free.
+    """
     text = normalize_text(text or "")
     if not text:
         return {"command": "unknown", "params": {}}
@@ -254,6 +420,7 @@ def parse_command(text: str) -> Dict[str, Any]:
             text = text[len(wake):].lstrip()
             break
 
+    # Fast-fail keyword filtering
     candidate_cmds = set()
     for kw, cmds in KEYWORD_INDEX.items():
         if kw in text:
@@ -280,6 +447,7 @@ def parse_command(text: str) -> Dict[str, Any]:
                     params = {}
                 return {"command": cmd_id, "params": params}
 
+    # Simple fallbacks
     if any(kw in text for kw in ("open ", "launch ", "start ", "run ")) and "browser" in text:
         return {"command": "open_browser", "params": {"browser": None}}
 
@@ -290,385 +458,3 @@ def parse_command(text: str) -> Dict[str, Any]:
         return {"command": "search", "params": {"query": text}}
 
     return {"command": "unknown", "params": {}}
-
-
-# ============================================================
-# Assistant: TTS, ASR, execution, continuous listening
-# ============================================================
-
-_engine: Optional[Any] = None
-_recognizer: Optional[Any] = None
-
-
-def _ensure_engine():
-    global _engine
-    if _engine is None:
-        if pyttsx3 is None:
-            _engine = None
-            return
-        try:
-            _engine = pyttsx3.init()
-        except Exception:
-            _engine = None
-
-
-def _ensure_recognizer():
-    global _recognizer
-    if _recognizer is None:
-        try:
-            _recognizer = sr.Recognizer()
-        except Exception:
-            _recognizer = None
-
-
-def speak(text: str) -> None:
-    print(f"ASSISTANT: {text}")
-    _ensure_engine()
-    if _engine is None:
-        return
-    try:
-        _engine.say(text)
-        _engine.runAndWait()
-    except Exception:
-        traceback.print_exc()
-
-
-def short_error_feedback(kind: str) -> None:
-    if kind == "asr_unknown":
-        speak("Sorry, I couldn't understand. Please say that again.")
-    elif kind == "asr_network":
-        speak("Speech service seems unavailable. Please check your internet.")
-    elif kind == "parse_unknown":
-        speak("I am not sure what you mean. Could you rephrase the command?")
-    elif kind == "exec_error":
-        speak("Something went wrong while executing that command.")
-    else:
-        speak("An unexpected error occurred.")
-
-
-def listen_once_continuous(
-    timeout: float = 5.0,
-    phrase_time_limit: float = 10.0,
-) -> str:
-    _ensure_recognizer()
-    if _recognizer is None:
-        raise OSError("Recognizer unavailable")
-    try:
-        with sr.Microphone() as source:
-            _recognizer.adjust_for_ambient_noise(source, duration=0.3)
-            try:
-                audio = _recognizer.listen(source, timeout=timeout, phrase_time_limit=phrase_time_limit)
-            except sr.WaitTimeoutError:
-                return ""
-        try:
-            text = _recognizer.recognize_google(audio)
-            print(f"USER: {text}")
-            return text
-        except sr.UnknownValueError:
-            return ""
-        except sr.RequestError:
-            raise
-        except Exception:
-            traceback.print_exc()
-            return ""
-    except OSError as e:
-        print(f"DEBUG: OSError in listen_once_continuous: {e}")
-        raise
-
-
-# Map common app names to Windows executables/commands
-APP_MAP: Dict[str, str] = {
-    "vscode": "code",
-    "visual studio code": "code",
-    "notepad": "notepad",
-    "chrome": "chrome",
-    "google chrome": "chrome",
-    "firefox": "firefox",
-    "spotify": "spotify",
-}
-
-
-def execute_command(command: str, params: Dict[str, Any]) -> None:
-    print(f"DEBUG: Executing {command!r} with params {params!r}")
-    try:
-        if command == "open_browser":
-            browser = params.get("browser") or "default"
-            speak(f"Opening {browser} browser.")
-            url = "https://www.google.com"
-            if sys.platform.startswith("win"):
-                # Use default browser; specific registered browser names require setup
-                webbrowser.open(url)
-            else:
-                webbrowser.open(url)
-
-        elif command == "search":
-            query = params.get("query") or ""
-            if not query:
-                speak("What should I search for?")
-                return
-            url = "https://www.google.com/search?q=" + query.replace(" ", "+")
-            speak(f"Searching the web for {query}.")
-            webbrowser.open(url)
-
-        elif command == "get_time":
-            # Placeholder – you can format actual time here
-            speak("Getting the current time and date.")
-
-        elif command == "system_power":
-            mode = params.get("mode")
-            if not sys.platform.startswith("win"):
-                speak("System power commands are only configured for Windows right now.")
-                return
-
-            if mode == "shutdown":
-                speak("Preparing to shut down. This is not executed automatically for safety.")
-                # os.system("shutdown /s /t 0")
-            elif mode == "restart":
-                speak("Preparing to restart. This is not executed automatically for safety.")
-                # os.system("shutdown /r /t 0")
-            elif mode == "sleep":
-                speak("Preparing to put the system to sleep. Not executed automatically for safety.")
-                # os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
-            elif mode == "lock":
-                speak("Locking your session.")
-                os.system("rundll32.exe user32.dll,LockWorkStation")
-            else:
-                speak("Which power action did you want: shut down, restart, sleep, or lock?")
-
-        elif command == "control_volume":
-            action = params.get("action")
-            level = params.get("level")
-            # Real volume control needs extra libraries (e.g., pycaw) on Windows.
-            if action == "mute":
-                speak("Muting volume.")
-            elif action == "unmute":
-                speak("Unmuting volume.")
-            elif action == "up":
-                speak("Turning the volume up.")
-            elif action == "down":
-                speak("Turning the volume down.")
-            elif action == "set" and level is not None:
-                speak(f"Setting volume to {level} percent.")
-            else:
-                speak("How should I adjust the volume?")
-
-        elif command == "control_app":
-            app = (params.get("app") or "").lower()
-            action = params.get("action")
-            if not sys.platform.startswith("win"):
-                speak("App control is only configured for Windows right now.")
-                return
-
-            if not app:
-                speak("Which application?")
-                return
-
-            target_exe = None
-            target_name = app
-            for key, exe in APP_MAP.items():
-                if key in app:
-                    target_exe = exe
-                    target_name = key
-                    break
-
-            if action == "open":
-                if target_exe:
-                    speak(f"Opening {target_name}.")
-                    try:
-                        subprocess.Popen(target_exe)
-                    except Exception:
-                        speak("I could not open that application.")
-                else:
-                    speak("I don't know how to open that application yet.")
-            elif action == "close":
-                if target_exe:
-                    speak(f"Closing {target_name}.")
-                    # taskkill is Windows-specific
-                    os.system(f"taskkill /IM {target_exe}.exe /F")
-                else:
-                    speak("I don't know how to close that application yet.")
-            else:
-                speak(f"What should I do with {app}? Open or close it?")
-
-        elif command == "open_path":
-            target = params.get("target") or ""
-            if not sys.platform.startswith("win"):
-                speak("Opening paths is only fully implemented for Windows right now.")
-                return
-
-            if "downloads" in target.lower():
-                speak("Opening Downloads folder.")
-                downloads = os.path.join(os.path.expanduser("~"), "Downloads")
-                try:
-                    os.startfile(downloads)  # type: ignore[attr-defined]
-                except Exception:
-                    speak("I could not open your Downloads folder.")
-            else:
-                speak(f"Opening {target}.")
-                try:
-                    os.startfile(target)  # type: ignore[attr-defined]
-                except Exception:
-                    speak("I could not open that path.")
-
-        elif command == "assistant_help":
-            speak(
-                "I can open apps, control your browser, adjust volume, manage power, "
-                "and search the web. Say 'Jarvis' followed by your command.",
-            )
-
-        elif command == "unknown":
-            short_error_feedback("parse_unknown")
-
-        else:
-            short_error_feedback("parse_unknown")
-
-    except Exception:
-        traceback.print_exc()
-        short_error_feedback("exec_error")
-
-
-def run_assistant_continuous() -> None:
-    speak("Continuous listening enabled. Say 'Jarvis' before your command, or 'stop listening' to turn me off.")
-
-    consecutive_soft_errors = 0
-    consecutive_hard_errors = 0
-
-    while True:
-        try:
-            text = listen_once_continuous(timeout=5.0, phrase_time_limit=10.0)
-            if not text:
-                consecutive_soft_errors += 1
-                if consecutive_soft_errors in (3, 6):
-                    speak("I’m still here. Say 'Jarvis' and then your command.")
-                time.sleep(0.2)
-                continue
-
-            consecutive_soft_errors = 0
-            consecutive_hard_errors = 0
-            lower = text.lower()
-
-            # Global stop phrases (no wake word required)
-            if any(kw in lower for kw in ("stop listening", "sleep now", "go offline")):
-                speak("Okay, I will stop listening for now.")
-                break
-
-            # Require wake word for all other actions
-            if "jarvis" not in lower:
-                print("DEBUG: No wake word 'jarvis' in input, ignoring.")
-                continue
-
-            result = parse_command(text)
-            command = result.get("command", "unknown")
-            params = result.get("params", {}) or {}
-            if not isinstance(params, dict):
-                params = {}
-
-            if command == "unknown":
-                short_error_feedback("parse_unknown")
-                continue
-
-            execute_command(command, params)
-            time.sleep(0.1)
-
-        except sr.RequestError:
-            consecutive_hard_errors += 1
-            print("DEBUG: RequestError from recognizer in continuous mode.")
-
-            if consecutive_hard_errors == 1:
-                speak("Speech service seems unavailable. I’ll retry in a few seconds.")
-            elif consecutive_hard_errors % 3 == 0:
-                speak("Still no connection to the speech service. Please check your internet.")
-
-            backoff = min(5.0, 1.0 + consecutive_hard_errors * 0.5)
-            time.sleep(backoff)
-            continue
-
-        except OSError:
-            traceback.print_exc()
-            speak("I lost access to the microphone. Please check your audio device.")
-            time.sleep(5.0)
-            continue
-
-        except KeyboardInterrupt:
-            speak("Stopping continuous listening. Goodbye.")
-            break
-
-        except Exception:
-            traceback.print_exc()
-            short_error_feedback("exec_error")
-            time.sleep(0.5)
-            continue
-
-
-# ============================================================
-# Parser test harness and text-only mode
-# ============================================================
-
-def run_parser_tests() -> None:
-    tests = []
-
-    def add(name: str, text: str, command: str, check):
-        tests.append((name, text, command, check))
-
-    add("open_browser_default", "Open the browser", "open_browser", lambda p: p["browser"] is None)
-    add("open_browser_chrome", "Launch Chrome", "open_browser", lambda p: p["browser"] == "chrome")
-    add("open_browser_firefox", "Can you start firefox browser for me?", "open_browser", lambda p: p["browser"] == "firefox")
-    add("search_basic", "Search for quantum tunneling", "search", lambda p: p["query"] == "quantum tunneling")
-    add("search_polite", "Google nearest cafe please", "search", lambda p: p["query"] == "nearest cafe")
-    add("time_query", "What's the time?", "get_time", lambda p: True)
-    add("date_query", "What's the date today?", "get_time", lambda p: True)
-    add("shutdown", "Please shut down the computer", "system_power", lambda p: p["mode"] == "shutdown")
-    add("restart", "Restart my PC", "system_power", lambda p: p["mode"] == "restart")
-    add("sleep", "Put the laptop to sleep", "system_power", lambda p: p["mode"] == "sleep")
-    add("lock", "Lock my laptop", "system_power", lambda p: p["mode"] == "lock")
-    add("volume_mute", "Mute the volume", "control_volume", lambda p: p["action"] == "mute")
-    add("volume_set", "Set volume to 35 percent", "control_volume", lambda p: p["action"] == "set" and p["level"] == 35)
-    add("control_app_open", "Open vscode", "control_app", lambda p: p["action"] == "open" and "vscode" in (p["app"] or "").lower())
-    add("control_app_close", "Close Spotify", "control_app", lambda p: p["action"] == "close" and "spotify" in (p["app"] or "").lower())
-    add("open_path", "Open downloads folder", "open_path", lambda p: "downloads" in (p["target"] or "").lower())
-    add("help", "What can you do?", "assistant_help", lambda p: True)
-    add("wake_word", "Jarvis search for python tutorials", "search", lambda p: p["query"] == "python tutorials")
-    add("unknown_fallback_search", "show me something totally random", "search", lambda p: "random" in p["query"])
-
-    passed = 0
-    for name, text, expected_cmd, checker in tests:
-        result = parse_command(text)
-        cmd = result.get("command")
-        params = result.get("params", {})
-        ok = cmd == expected_cmd and checker(params)
-        print(f"[{'OK' if ok else 'FAIL'}] {name}: {text!r} -> {cmd!r}, {params}")
-        if ok:
-            passed += 1
-
-    print(f"\n{passed}/{len(tests)} tests passed.")
-
-
-def run_text_once() -> None:
-    print("Type commands (q to quit). They will be parsed and executed without mic.\n")
-    while True:
-        try:
-            text = input("YOU> ")
-        except EOFError:
-            break
-        if not text or text.lower() in ("q", "quit", "exit"):
-            break
-        result = parse_command(text)
-        execute_command(result.get("command", "unknown"), result.get("params", {}) or {})
-
-
-if __name__ == "__main__":
-    if "--test" in sys.argv:
-        run_parser_tests()
-    elif "--once" in sys.argv:
-        run_text_once()
-    else:
-        try:
-            run_assistant_continuous()
-        except KeyboardInterrupt:
-            print("\nDEBUG: KeyboardInterrupt, shutting down.")
-            speak("Shutting down. See you later.")
-        except Exception:
-            traceback.print_exc()
-            speak("A critical error occurred. Restart me when you're ready.")
-import speech_recognition as sr
-import pyttsx3
