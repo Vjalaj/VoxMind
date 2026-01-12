@@ -33,6 +33,6 @@
 
 # Minakshi section
 # Minakshi can add her requirements here
-
+pyttsx3~=2.99
 # End of Minakshi section
 

@@ -8,7 +8,7 @@ import webbrowser # for web browsing
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
 
-# conveting text to speech 
+# converting text to speech
 def speak(text):
     engine.say(text)
     engine.runAndWait()

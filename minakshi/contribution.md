@@ -3,13 +3,23 @@
 ## Week 1: Set up text-to-speech using `pyttsx3` library
 
 ### What I did:
-- [Add your work here]
+- Implemented a TTS engine using pyttsx3 
+- Created a simple interactive demo to test sample voices available
+
 
 ### Resources/AI used:
-- [List any resources, documentation, AI tools, etc. you used]
+- Python Documentation
+- pyttsx3 docs
+- Similar projects on internet
+- Claude Code
 
 ### Challenges faced:
 - [Optional: Describe any difficulties and how you overcame them]
 
 ### Next steps:
-- [Optional: What you plan to do next or suggestions for improvement]
+- Implement Google TTS, and piper-tts
+- Input handling
+- Adding features for speech configuration like rate and volume manipulation
+- Storing user preferences for all other next sessions.
+- Implement threading concepts. 
+- Add stop compatibility while TTS state is active. 
