@@ -1,4 +1,4 @@
-# Base requirements
+﻿# Base requirements
 # Add common packages here
 
 # Jalaj section
@@ -15,6 +15,7 @@ PyAudio>=0.2.11
 
 # Soumyadeb section
 # Soumyadeb can add his requirements here
+PyAudio>=0.2.11
 
 # End of Soumyadeb section
 
@@ -25,7 +26,7 @@ PyAudio>=0.2.11
 
 # yash section
 # yash can add his requirements here
-pyttsx3>=2.90
+# yash integration helpers (no external deps listed)
 
 # End of yash section
 
@@ -36,5 +37,5 @@ pyttsx3>=2.90
 
 # Minakshi section
 # Minakshi can add her requirements here
-pyttsx3~=2.99
+pyttsx3>=2.90
 # End of Minakshi section
