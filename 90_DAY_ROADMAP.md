@@ -32,7 +32,7 @@ Make VoxMind a **privacy-first, locally-running voice assistant** for developers
 5. **Sumant** - Testing & Quality Assurance
 
 ### Yash's Tasks Redistribution
-- **Feature Integration** → Jalaj (you're already doing this)
+- **Feature Integration** → Jalaj ()
 - **Weather/Calendar APIs** → Soumyadeb (backend work)
 - **Math/Unit Conversions** → Priyapal (NLP parsing)
 - **Command History** → Soumyadeb (data storage)
