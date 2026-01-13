@@ -3,6 +3,8 @@
 
 # Jalaj section
 # Jalaj can add his requirements here
+SpeechRecognition>=3.8.1
+PyAudio>=0.2.11
 
 # End of Jalaj section
 
@@ -23,6 +25,7 @@
 
 # yash section
 # yash can add his requirements here
+pyttsx3>=2.90
 
 # End of yash section
 
@@ -35,4 +38,3 @@
 # Minakshi can add her requirements here
 pyttsx3~=2.99
 # End of Minakshi section
-
