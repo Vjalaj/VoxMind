@@ -1,4 +1,4 @@
-"""Simple TTS wrapper using pyttsx3 (moved to `yash`)."""
+"""Simple TTS wrapper using pyttsx3 (moved to `Tejas`)."""
 from typing import Optional
 try:
     import pyttsx3

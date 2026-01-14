@@ -12,14 +12,14 @@ sys.path.insert(0, ROOT)
 
 # Import components
 from Jalaj.speech_recognition_service import listen_for_command
-from yash.wake_word_detector import listen_for_wake_word
+from Tejas.wake_word_detector import listen_for_wake_word
 from Priyapal.command_parser import parse_command
 
 try:
     from minakshi.text_to_speech import speak_text
 except:
     try:
-        from yash.text_to_speech import speak_text
+        from Tejas.text_to_speech import speak_text
     except:
         import pyttsx3
         engine = pyttsx3.init()

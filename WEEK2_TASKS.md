@@ -1,60 +1,57 @@
 # Week 2 Tasks: VoxMind Phase 2 - Enhancement & Testing
 
-## 🔄 Team Update
-**Tejas has left the team.** His tasks have been redistributed among remaining members.
+## 🎉 Team Update
+**Tejas has joined the team!** He will take over Tejas's integration and feature development role.
 
-## Team Structure (5 Members)
-1. **Jalaj** - Tech Lead & Integration
+## Team Structure (6 Members)
+1. **Jalaj** - Tech Lead & System Integration
 2. **Priyapal** - NLP & Command Parser
-3. **Minakshi** - Voice & Audio (TTS)
+3. **Minakshi** - Voice & TTS
 4. **Soumyadeb** - Backend & Audio Processing
 5. **Sumant** - QA & Wake Word Detection
+6. **Tejas** - Feature Development & Testing (NEW)
 
 ---
 
 ## Task Assignments
 
-### Jalaj - Advanced Integration & Feature Development
-**Task**: System integration, new features, and testing coordination
+### Jalaj - Tech Lead & System Integration
+**Task**: Lead integration, architecture, and coordination
 
 **Detailed Steps**:
 
-1. **Integration Enhancements**:
-   - Add configuration file support (config.json for settings)
-   - Implement logging system (Python logging module)
+1. **Integration Leadership**:
+   - Add configuration file support (config.json)
+   - Implement logging system (Python logging)
    - Add conversation history tracking
    - Improve error recovery mechanisms
+   - Code review for all team members
 
-2. **New Features** (from Tejas's tasks):
-   - Weather information (OpenWeatherMap API)
-   - Math calculations ("calculate 25 * 4")
-   - Unit conversions ("convert 5 miles to km")
-   - Command history ("what did I ask before")
-
-3. **System Testing**:
+2. **System Testing**:
    - Create `tests/test_integration.py`
    - Test complete voice pipeline
    - Test all command types end-to-end
    - Test error scenarios
    - Performance testing (response time, memory)
 
-4. **Documentation**:
+3. **Documentation & Architecture**:
    - Update README with new features
    - Create troubleshooting guide
    - Document system architecture
+   - Create API documentation
 
 **Deliverables**: 
 - Enhanced main.py with config and logging
-- 4 new command types working
 - Comprehensive integration test suite
 - System architecture documentation
+- Team coordination and code reviews
 
 **Time Estimate**: 20-25 hours
 
 ---
 
 ### Priyapal - Advanced Parser & NLP Integration
-**Task**: Expand parser, add NLP, and implement smart features
+**Task**: Expand parser and integrate NLP capabilities
 
 **Detailed Steps**:
 
@@ -65,26 +62,21 @@
    - Support compound commands ("open browser and search for python")
    - Add command aliases and shortcuts
 
-2. **NLP Integration** (NEW - HIGH PRIORITY):
+2. **NLP Integration** (HIGH PRIORITY):
    - Integrate sentence-transformers for intent classification
    - Create training dataset (200+ examples)
    - Implement the nlp_command_parser.py fully
    - Add confidence scoring
    - Fallback to pattern matching when confidence low
 
-3. **Smart Features** (from Tejas's tasks):
-   - Command suggestions based on history
-   - Auto-correction for misheard commands
-   - Learn user preferences
-
-4. **Testing**:
+3. **Testing**:
    - Create `tests/test_parser.py`
    - Test all 60+ command patterns
    - Test NLP accuracy (>90% target)
    - Test edge cases
    - Benchmark parsing speed
 
-5. **Documentation**:
+4. **Documentation**:
    - Document all supported patterns
    - Create command reference guide
    - NLP model documentation
@@ -100,7 +92,7 @@
 ---
 
 ### Minakshi - TTS Enhancement & Voice Quality
-**Task**: Improve text-to-speech and add voice features
+**Task**: Improve text-to-speech and voice experience
 
 **Detailed Steps**:
 
@@ -117,18 +109,18 @@
    - Test clarity and naturalness
    - Add emotion in voice (happy, sad, neutral)
 
-3. **Testing**:
+3. **User Experience**:
+   - Add voice feedback sounds (beep on activation)
+   - Implement "thinking" sound while processing
+   - Add confirmation sounds
+
+4. **Testing**:
    - Create `tests/test_tts.py`
    - Test different text lengths
    - Test special characters and numbers
    - Test voice property changes
    - Test error handling
-   - Performance testing (speech generation time)
-
-4. **User Experience**:
-   - Add voice feedback sounds (beep on activation)
-   - Implement "thinking" sound while processing
-   - Add confirmation sounds
+   - Performance testing
 
 **Deliverables**:
 - Enhanced TTS module with voice options
@@ -141,7 +133,7 @@
 ---
 
 ### Soumyadeb - Audio Processing & Backend Services
-**Task**: Audio quality, backend APIs, and data storage
+**Task**: Audio quality and backend infrastructure
 
 **Detailed Steps**:
 
@@ -152,7 +144,7 @@
    - Add audio recording quality settings
    - Implement audio buffering
 
-2. **Backend Services** (from Tejas's tasks):
+2. **Backend Services**:
    - Weather API integration (OpenWeatherMap)
    - Create API wrapper for external services
    - Implement caching for API responses
@@ -183,8 +175,8 @@
 
 ---
 
-### Sumant - QA, Wake Word, and Testing Automation
-**Task**: Quality assurance, wake word improvement, and test automation
+### Sumant - QA Lead & Wake Word Detection
+**Task**: Quality assurance and wake word improvement
 
 **Detailed Steps**:
 
@@ -195,14 +187,7 @@
    - Support multiple wake words ("Hey Vox", "Vox")
    - Implement local wake word detection (Porcupine optional)
 
-2. **Testing Automation** (from Tejas's tasks):
-   - Create automated test suite for all components
-   - Set up CI/CD pipeline (GitHub Actions)
-   - Create test data generators
-   - Implement regression testing
-   - Performance benchmarking automation
-
-3. **Quality Assurance**:
+2. **Quality Assurance**:
    - Create `tests/test_wake_word.py`
    - Test detection accuracy (true positive rate)
    - Test false positive rate
@@ -211,24 +196,74 @@
    - Test detection latency
    - Test continuous listening stability
 
-4. **Integration Testing** (from Tejas's tasks):
+3. **Testing Coordination**:
+   - Help team members write tests
+   - Review test coverage
+   - Create testing guidelines
+   - Document testing best practices
+
+**Deliverables**:
+- Improved wake word detector
+- Complete test suite with accuracy metrics
+- Testing guidelines document
+- Performance optimization report
+
+**Time Estimate**: 20-25 hours
+
+---
+
+### Tejas - Feature Development & Integration Testing (NEW)
+**Task**: Implement new features and comprehensive testing
+
+**Detailed Steps**:
+
+1. **New Feature Implementation**:
+   - **Weather Information**: 
+     - Integrate OpenWeatherMap API
+     - Commands: "what's the weather", "weather in [city]"
+     - Display temperature, conditions, forecast
+   
+   - **Math Calculations**:
+     - Parse math expressions: "calculate 25 * 4"
+     - Support basic operations (+, -, *, /, ^)
+     - Handle complex expressions with parentheses
+   
+   - **Unit Conversions**:
+     - Convert units: "convert 5 miles to km"
+     - Support distance, weight, temperature, time
+     - Use pint library for conversions
+   
+   - **Command History**:
+     - Track last 50 commands
+     - Commands: "what did I ask before", "repeat last command"
+     - Store in SQLite database
+
+2. **Integration Testing**:
    - Create `tests/test_features.py`
    - Test all new features
    - Test feature interactions
    - Test command history
-   - Regression testing
+   - Integration testing with all components
+   - Regression testing (ensure Week 1 features still work)
 
-5. **Documentation**:
-   - Create testing guide
-   - Document test coverage
-   - Create bug report templates
+3. **CI/CD Setup**:
+   - Set up GitHub Actions
+   - Automate test running on push
+   - Create automated build pipeline
+   - Set up code coverage reporting
+
+4. **Documentation**:
+   - Update user guide with new features
+   - Create feature comparison matrix
+   - Document API for each component
+   - Write usage examples
 
 **Deliverables**:
-- Improved wake word detector
-- Complete test automation suite
-- CI/CD pipeline working
-- Test coverage report (>80% target)
-- Performance optimization report
+- 4 new feature types working (weather, math, conversions, history)
+- Complete feature test suite
+- CI/CD pipeline operational
+- Updated documentation
+- Demo video of new features
 
 **Time Estimate**: 25-30 hours
 
@@ -254,11 +289,6 @@
 pip install pytest pytest-cov pytest-mock
 ```
 
-- `pytest` for test framework
-- `pytest-cov` for coverage reports
-- `pytest-mock` for mocking
-- `time` module for performance testing
-
 ### Test File Structure
 ```
 tests/
@@ -270,7 +300,7 @@ tests/
 ├── test_audio.py             # Soumyadeb
 ├── test_backend.py           # Soumyadeb
 ├── test_wake_word.py         # Sumant
-├── test_features.py          # Sumant
+├── test_features.py          # Tejas
 └── conftest.py               # Shared fixtures
 ```
 
@@ -283,11 +313,53 @@ pytest tests/
 pytest --cov=. tests/
 
 # Run specific test file
-pytest tests/test_parser.py
+pytest tests/test_features.py
 
 # Run with verbose output
 pytest -v tests/
 ```
+
+---
+
+## Weekly Schedule
+
+### Monday
+- Sprint planning meeting (1 hour, 10 AM)
+- Task assignment and clarification
+- Set up development environment
+- **Welcome Tejas to the team!**
+
+### Tuesday-Thursday
+- Daily standup (15 minutes, 9 AM)
+  - What did I do yesterday?
+  - What will I do today?
+  - Any blockers?
+- Development work
+- Code reviews
+- Testing
+
+### Friday
+- Sprint review (1 hour, 4 PM)
+- Demo new features
+- Retrospective (30 minutes)
+- Submit work
+
+---
+
+## Communication
+
+### Tools
+- **GitHub**: Code repository, issues, pull requests
+- **Discord/Slack**: Daily communication
+- **Google Meet**: Video calls
+- **Notion/Trello**: Task tracking
+
+### Code Review Process
+1. Create feature branch
+2. Implement feature with tests
+3. Create pull request
+4. Jalaj reviews and approves
+5. Merge to main
 
 ---
 
@@ -317,49 +389,19 @@ pytest -v tests/
 
 ---
 
-## Weekly Schedule
-
-### Monday
-- Sprint planning meeting (1 hour)
-- Task assignment and clarification
-- Set up development environment
-
-### Tuesday-Thursday
-- Daily standup (15 minutes, 9 AM)
-- Development work
-- Code reviews
-- Testing
-
-### Friday
-- Sprint review (1 hour)
-- Demo new features
-- Retrospective (30 minutes)
-- Submit work
-
----
-
-## Communication
-
-### Daily Standup Format (15 min)
-Each person answers:
-1. What did I do yesterday?
-2. What will I do today?
-3. Any blockers?
-
-### Tools
-- **GitHub**: Code repository, issues, pull requests
-- **Discord/Slack**: Daily communication
-- **Google Meet**: Video calls
-- **Notion/Trello**: Task tracking
-
----
-
 ## Deadline
 **Submit all work by Friday, 11:59 PM**
 
 ---
 
 ## Resources
+
+### For Tejas (New Features)
+- OpenWeatherMap API: https://openweathermap.org/api
+- Math parsing: https://pypi.org/project/py-expression-eval/
+- Unit conversions: https://pint.readthedocs.io/
+- SQLite: https://docs.python.org/3/library/sqlite3.html
+- GitHub Actions: https://docs.github.com/en/actions
 
 ### General
 - pytest documentation: https://docs.pytest.org/
@@ -376,16 +418,6 @@ Each person answers:
 - PyAudio docs: https://people.csail.mit.edu/hubert/pyaudio/
 - Noise reduction: https://github.com/timsainb/noisereduce
 
-### APIs (Jalaj, Soumyadeb)
-- OpenWeatherMap: https://openweathermap.org/api
-- FastAPI: https://fastapi.tiangolo.com/
-- SQLite: https://docs.python.org/3/library/sqlite3.html
-
-### Testing (Sumant)
-- pytest tutorial: https://realpython.com/pytest-python-testing/
-- GitHub Actions: https://docs.github.com/en/actions
-- Test automation: https://testautomationuniversity.com/
-
 ---
 
 ## Success Criteria
@@ -401,6 +433,31 @@ Each person answers:
 - System stable and tested
 - Demo ready for presentation
 - Ready for Week 3 (bug fixes & optimization)
+
+---
+
+## Welcome Message for Tejas
+
+Welcome to VoxMind, Tejas! 🎉
+
+You're joining at an exciting time. We've just completed Week 1 with a working voice assistant, and now we're adding advanced features.
+
+**Your Role**: You'll be implementing 4 major features (weather, math, conversions, history) and setting up our CI/CD pipeline. This is critical work that will make VoxMind much more useful!
+
+**Getting Started**:
+1. Clone the repo and run `python main.py --simulate` to see current state
+2. Read `README.md` and `90_DAY_ROADMAP.md`
+3. Set up your development environment
+4. Join our daily standup (9 AM)
+5. Reach out to Jalaj for any questions
+
+**Tips**:
+- Start with weather API (easiest)
+- Test each feature thoroughly
+- Document as you go
+- Ask questions early and often
+
+We're excited to have you on the team! 🚀
 
 ---
 

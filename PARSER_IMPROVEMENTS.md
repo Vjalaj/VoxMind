@@ -53,7 +53,7 @@
 
 ### Basic Usage (Backward Compatible)
 ```python
-from yash.command_parser import parse_command
+from Tejas.command_parser import parse_command
 
 result = parse_command("open browser")
 # Returns: {'type': 'open_browser', 'raw': 'open browser'}
@@ -83,10 +83,10 @@ result = parse_command("jarvis what time is it")
 Replace in `main.py`:
 ```python
 # OLD
-from yash.command_parser import parse_command
+from Tejas.command_parser import parse_command
 
 # NEW (same import, enhanced functionality)
-from yash.command_parser import parse_command
+from Tejas.command_parser import parse_command
 
 # Enable logging to see pattern matches
 import logging
@@ -106,7 +106,7 @@ pip install sentence-transformers
 
 Then use:
 ```python
-from yash.nlp_command_parser import parse_command_nlp
+from Tejas.nlp_command_parser import parse_command_nlp
 result = parse_command_nlp(text, use_nlp=True)
 ```
 
@@ -114,7 +114,7 @@ result = parse_command_nlp(text, use_nlp=True)
 
 Run the comprehensive tests:
 ```bash
-cd yash
+cd Tejas
 python test_enhanced_parser.py      # Test all patterns
 python test_parser_comparison.py    # Compare basic vs enhanced
 python demo_integration.py          # Interactive demo
@@ -122,8 +122,8 @@ python demo_integration.py          # Interactive demo
 
 ## Files Modified/Added
 
-- ✅ **Enhanced**: `yash/command_parser.py` - Main parser with expanded patterns
-- ➕ **New**: `yash/nlp_command_parser.py` - NLP-enhanced version
-- ➕ **New**: `yash/test_enhanced_parser.py` - Comprehensive tests
-- ➕ **New**: `yash/test_parser_comparison.py` - Comparison tests
-- ➕ **New**: `yash/demo_integration.py` - Integration demo
+- ✅ **Enhanced**: `Tejas/command_parser.py` - Main parser with expanded patterns
+- ➕ **New**: `Tejas/nlp_command_parser.py` - NLP-enhanced version
+- ➕ **New**: `Tejas/test_enhanced_parser.py` - Comprehensive tests
+- ➕ **New**: `Tejas/test_parser_comparison.py` - Comparison tests
+- ➕ **New**: `Tejas/demo_integration.py` - Integration demo

@@ -1,4 +1,4 @@
-"""Generate textual responses for parsed commands (moved to `yash`)."""
+"""Generate textual responses for parsed commands (moved to `Tejas`)."""
 from datetime import datetime
 from typing import Dict, Any
 

@@ -1,34 +1,88 @@
 # Contribution.md - Soumyadeb
 
-## Week 1: Set up audio processing pipeline
+## Week 1: Audio Handler
 
 ### What I did:
-- Designed and implemented a complete audio input/output pipeline in Python.
-- Installed and configured audio-related dependencies compatible with modern Python versions.
-- Created an `audio_handler.py` module to handle microphone input and speaker output.
-- Configured audio parameters such as sample rate, channels, and data format optimized for speech processing.
-- Implemented audio recording using callback-based input streams.
-- Added playback functionality to test recorded audio.
-- Implemented utility functions:
-  - `start_recording()` to begin microphone capture
-  - `stop_recording()` to stop recording and return audio data
-  - `play_audio(audio_data)` to play recorded or generated audio
-- Tested the pipeline with different recordings to ensure reliability and audio clarity.
+- **Audio Handler**: Created `audio_handler.py` for audio I/O
+  - Microphone input handling
+  - Audio stream management
+  - Device configuration
+  - Basic audio processing
 
-### Resources / AI used:
-- Python documentation
-- `sounddevice` library documentation
-- `soundfile` library documentation
-- NumPy documentation
-- ChatGPT (for guidance on audio pipeline design and best practices)
+### Resources used:
+- PyAudio documentation
+- Audio processing tutorials
+- ChatGPT for troubleshooting
+- Stack Overflow
 
 ### Challenges faced:
-- Faced compatibility issues with PyAudio on newer Python versions.
-- Researched and switched to the `sounddevice` library, which provides better stability and cross-platform support.
-- Ensured correct handling of audio buffers and real-time callbacks without data loss.
+1. **Device selection**: Multiple audio devices causing conflicts
+   - Solution: Implemented device enumeration and selection
 
-### Next steps:
-- Integrate Speech-to-Text (STT) using Whisper or Vosk.
-- Add Text-to-Speech (TTS) for voice responses.
-- Implement wake-word detection (e.g., “Hey Jarvis”).
-- Connect the audio pipeline with the core AI reasoning module.
+2. **Audio quality**: Background noise affecting recognition
+   - Solution: Added basic noise filtering
+
+3. **Buffer management**: Audio buffer overflow issues
+   - Solution: Proper buffer size configuration
+
+### Next steps (Week 2):
+- Implement noise reduction
+- Add audio level monitoring
+- Support multiple audio devices
+- Audio quality settings
+- Backend API integration
+- Comprehensive testing
+
+---
+
+## Week 2: Audio Processing & Backend Services
+
+### What I will do:
+
+**Audio Enhancements:**
+- Implement noise reduction
+- Add audio level monitoring
+- Support multiple audio devices
+- Add audio recording quality settings
+- Implement audio buffering
+
+**Backend Services:**
+- Weather API integration (OpenWeatherMap)
+- Create API wrapper for external services
+- Implement caching for API responses
+- Build conversation history database (SQLite)
+- User profiles storage
+
+**Testing:**
+- Create comprehensive test suite
+- Test different sample rates
+- Test different audio formats
+- Test device switching
+- Test noise reduction effectiveness
+- Performance testing
+
+**Infrastructure:**
+- Set up logging infrastructure
+- Create backup system for user data
+- Implement error tracking
+
+### Timeline:
+- **Day 1-2**: Audio enhancements
+- **Day 3**: Weather API integration
+- **Day 4**: Database setup
+- **Day 5**: Caching and optimization
+- **Day 6**: Testing
+- **Day 7**: Documentation
+
+### Success Criteria:
+- Audio quality improved
+- Backend APIs working
+- Database operational
+- Test coverage >80%
+
+---
+
+## Contact
+- Tech Lead: Jalaj
+- Questions: Team Whatsapp
+- Code Reviews: PR and tag Jalaj

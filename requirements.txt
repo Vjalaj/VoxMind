@@ -24,11 +24,11 @@ PyAudio>=0.2.11
 
 # End of Priyapal section
 
-# yash section
-# yash can add his requirements here
-# yash integration helpers (no external deps listed)
+# Tejas section
+# Tejas can add his requirements here
+# Tejas integration helpers (no external deps listed)
 
-# End of yash section
+# End of Tejas section
 
 # Sumant section
 # Sumant can add his requirements here

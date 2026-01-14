@@ -83,10 +83,10 @@ def integration_example():
     
     integration_code = '''
 # In main.py, replace the basic parser import:
-# from yash.command_parser import parse_command
+# from Tejas.command_parser import parse_command
 
 # With enhanced version:
-from yash.command_parser import parse_command
+from Tejas.command_parser import parse_command
 
 # Enable logging to see which patterns match:
 import logging

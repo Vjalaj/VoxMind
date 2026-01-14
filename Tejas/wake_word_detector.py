@@ -1,4 +1,4 @@
-"""Simple wake-word detector with microphone and keyboard fallback (moved to `yash`)."""
+"""Simple wake-word detector with microphone and keyboard fallback (moved to `Tejas`)."""
 from typing import Optional
 import speech_recognition as sr
 

@@ -3,7 +3,7 @@ import logging
 import sys
 import os
 
-# Add the yash directory to path
+# Add the Tejas directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
 
 from command_parser import parse_command

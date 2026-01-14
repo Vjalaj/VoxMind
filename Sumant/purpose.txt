@@ -1,1 +1,38 @@
-This section of code will be updated by Sumant
+# Sumant - QA Lead & Wake Word Engineer
+
+## Role
+Quality Assurance Lead & Wake Word Detection
+
+## Week 1 Responsibilities
+- Wake word detection research
+- Testing different approaches
+- Collaboration on implementation
+
+## Week 2 Responsibilities
+- Wake word accuracy improvement
+- QA lead for entire project
+- Test suite creation
+- Testing coordination
+- Test automation
+- Testing guidelines
+
+## Key Technologies
+- speech_recognition (wake word)
+- Porcupine (local wake word - optional)
+- pytest (testing framework)
+- pytest-cov (coverage)
+- pytest-mock (mocking)
+- GitHub Actions (CI/CD)
+
+## Deliverables
+### Week 1:
+- Wake word detection contribution
+- Initial testing
+
+### Week 2:
+- Improved wake word detector
+- Comprehensive test suite
+- Testing guidelines
+- Test automation
+- Coverage reports (>80%)
+- Performance metrics

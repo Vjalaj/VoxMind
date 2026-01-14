@@ -1,1 +1,75 @@
-This section of code will be updated by Jalaj
+# Jalaj - Tech Lead & System Integration
+
+## Role
+Technical Lead & System Integration Engineer
+
+## Week 1 Responsibilities
+- Speech recognition implementation (Google Web Speech API)
+- System integration of all team components
+- Main.py development and coordination
+- Command execution system (browser, search, time, volume, apps, system)
+- Continuous listening mode implementation
+- Team coordination and task distribution
+- 90-day roadmap creation
+
+## Week 2 Responsibilities
+- Tech lead and team coordination
+- Configuration system (config.json)
+- Logging infrastructure
+- Conversation history tracking
+- Integration testing
+- Code reviews for all team members
+- Documentation and architecture
+- Daily standups and sprint management
+
+## Key Technologies
+- speech_recognition (Google Web Speech API)
+- Python logging
+- JSON (configuration)
+- pytest (testing)
+- webbrowser (browser control)
+- subprocess (system commands)
+- datetime (time/date)
+- os/sys (system operations)
+
+## Leadership Responsibilities
+- Daily standups (15 min, 9 AM)
+- Code reviews (all PRs)
+- Technical decision making
+- Unblocking team members
+- Sprint planning (Monday)
+- Sprint review (Friday)
+- Retrospective (Friday)
+
+## Deliverables
+### Week 1:
+- Speech recognition service
+- Integrated main.py
+- Command execution system
+- Continuous listening mode
+- Team coordination
+- 90-day roadmap
+
+### Week 2:
+- Configuration system
+- Logging infrastructure
+- Conversation history
+- Integration test suite
+- Code reviews completed
+- System architecture documentation
+- Team coordination
+
+## Team Structure (6 Members)
+1. Jalaj - Tech Lead
+2. Priyapal - NLP & Parser
+3. minakshi - TTS & Voice
+4. Soumyadeb - Backend & Audio
+5. Sumant - QA & Wake Word
+6. Tejas - Features & Testing
+
+## Success Metrics
+- All team members unblocked
+- All PRs reviewed within 24 hours
+- Integration tests >80% coverage
+- System stable and working
+- Team on track for Week 3

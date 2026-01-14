@@ -1,0 +1,44 @@
+# Tejas - Voice Interface & Feature Development
+
+## Role
+Voice Interface Developer & Feature Integration Lead
+
+## Week 1 Responsibilities
+- Wake word detection ("Hey Vox")
+- Text-to-speech implementation
+- Response generation
+- Command parser enhancement (40+ patterns)
+- NLP integration foundation
+- Testing suite creation
+
+## Week 2 Responsibilities
+- New feature implementation (weather, math, conversions, history)
+- Integration testing
+- CI/CD pipeline setup
+- Documentation and demos
+
+## Key Technologies
+- speech_recognition (wake word)
+- pyttsx3 (TTS)
+- sentence-transformers (NLP)
+- OpenWeatherMap API (weather)
+- py-expression-eval (math)
+- pint (unit conversions)
+- SQLite (command history)
+- pytest (testing)
+- GitHub Actions (CI/CD)
+
+## Deliverables
+### Week 1:
+- Wake word detector
+- TTS system
+- Response generator
+- Enhanced command parser
+- NLP integration
+- Test suite
+
+### Week 2:
+- 4 new features (weather, math, conversions, history)
+- Integration tests
+- CI/CD pipeline
+- Feature documentation

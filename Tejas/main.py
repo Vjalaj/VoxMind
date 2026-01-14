@@ -1,4 +1,4 @@
-"""Integration entry point for VoxMind voice pipeline (placed in `yash/`).
+"""Integration entry point for VoxMind voice pipeline (placed in `Tejas/`).
 
 Run with `--simulate` to use keyboard/text I/O instead of microphone for quick tests.
 """
@@ -13,10 +13,10 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 from Jalaj.speech_recognition_service import listen_for_command
-from yash.wake_word_detector import listen_for_wake_word
-from yash.command_parser import parse_command
-from yash.response_generator import generate_response
-from yash.text_to_speech import speak_text
+from Tejas.wake_word_detector import listen_for_wake_word
+from Tejas.command_parser import parse_command
+from Tejas.response_generator import generate_response
+from Tejas.text_to_speech import speak_text
 
 
 def run_loop(simulate: bool = False, no_tts: bool = False):

@@ -105,12 +105,12 @@ python Jalaj\test_listen.py
 
 **Test Wake Word Detection**
 ```powershell
-python yash\test_wake_word.py
+python Tejas\test_wake_word.py
 ```
 
 **Test Enhanced Command Parser**
 ```powershell
-python yash\test_enhanced_parser.py
+python Tejas\test_enhanced_parser.py
 ```
 
 ## Project Structure
@@ -121,7 +121,7 @@ VoxMind/
 ├── Jalaj/                     # Speech recognition + Integration
 │   ├── speech_recognition_service.py
 │   └── test_listen.py
-├── yash/                      # Wake word, TTS, response
+├── Tejas/                      # Wake word, TTS, response
 │   ├── wake_word_detector.py
 │   ├── text_to_speech.py
 │   └── response_generator.py
@@ -138,7 +138,7 @@ VoxMind/
 
 ### Week 1 - Core Voice Interface
 - **Jalaj**: Speech recognition + System integration & coordination
-- **Yash**: Wake word detection, TTS, response generation
+- **Tejas**: Wake word detection, TTS, response generation
 - **Priyapal**: Advanced command parser (40+ patterns)
 - **Minakshi**: Text-to-speech implementation
 - **Swadhin**: Response generation
