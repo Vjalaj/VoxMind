@@ -28,40 +28,40 @@
 
 ## Week 2: Response System Enhancement & User Experience
 
-### What I will do:
+### What I did:
 
 **Response Enhancements:**
-- Add personality to responses (friendly, professional, humorous)
-- Implement context-aware responses
-- Add response variations to avoid repetition (5+ per command type)
-- Support for multi-sentence responses
-- Add error message improvements
+- Added personality to responses (friendly, professional, humorous)
+- Implemented context-aware responses
+- Added response variations to avoid repetition (5+ per command type)
+- Enabled multi-sentence responses
+- Improved error messages for clarity and usability
 
 **User Experience:**
-- Create conversational flow
-- Add follow-up question handling
-- Implement confirmation dialogs for critical actions
-- Add helpful suggestions in responses
-- Create onboarding responses for new users
+- Created conversational flow for smoother interactions
+- Implemented follow-up question handling
+- Added confirmation dialogs for critical actions
+- Included helpful suggestions within responses
+- Built onboarding responses for new users
 
 **Response Templates:**
-- Build response template system
-- Create templates for all command types
-- Add dynamic content insertion
-- Implement response personalization
+- Built a response template system
+- Created templates for all command types
+- Added dynamic content insertion
+- Implemented response personalization
 
 **Testing:**
-- Create `tests/test_responses.py`
-- Test all command types
-- Test response variety
-- Test context handling
-- Test error responses
-- Test response appropriateness
+- Created `tests/test_responses.py`
+- Tested all command types
+- Verified response variety and randomness
+- Tested context handling and state persistence
+- Validated error responses
+- Checked response tone and appropriateness
 
 **Quality Improvements:**
-- Add response timing optimization
-- Implement response caching for common queries
-- Test conversational flow
+- Optimized response timing
+- Implemented response caching for common queries
+- Tested end-to-end conversational flow
 
 ### Timeline:
 - **Day 1-2**: Personality implementation + response templates
@@ -72,11 +72,11 @@
 - **Day 7**: Documentation
 
 ### Success Criteria:
-- Personality working (3 modes: friendly, professional, humorous)
-- Context awareness implemented
-- Response variety >5 per command type
-- Test coverage >80%
-- UX improvements documented
+- Personality implemented (friendly, professional, humorous)
+- Context awareness working as expected
+- Response variety greater than 5 per command type
+- Test coverage above 80%
+- User experience improvements documented
 
 ---
 
