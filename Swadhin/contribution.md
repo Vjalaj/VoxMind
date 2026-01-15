@@ -12,6 +12,7 @@
 - Python documentation
 - ChatGPT for response ideas
 - Stack Overflow
+- UX writing guides
 
 ### Challenges faced:
 1. **Response variety**: Avoiding repetitive responses
@@ -23,29 +24,34 @@
 3. **Error messages**: Generic error messages not helpful
    - Solution: Created specific error responses
 
-### Next steps (Week 2):
-- Add personality to responses
-- Implement context-aware responses
-- Add response variations
-- Multi-sentence responses
-- Error message improvements
-- Comprehensive testing
-
 ---
 
-## Week 2: Response System Enhancement
+## Week 2: Response System Enhancement & User Experience
 
 ### What I will do:
 
 **Response Enhancements:**
 - Add personality to responses (friendly, professional, humorous)
 - Implement context-aware responses
-- Add response variations to avoid repetition
+- Add response variations to avoid repetition (5+ per command type)
 - Support for multi-sentence responses
 - Add error message improvements
 
+**User Experience:**
+- Create conversational flow
+- Add follow-up question handling
+- Implement confirmation dialogs for critical actions
+- Add helpful suggestions in responses
+- Create onboarding responses for new users
+
+**Response Templates:**
+- Build response template system
+- Create templates for all command types
+- Add dynamic content insertion
+- Implement response personalization
+
 **Testing:**
-- Create comprehensive test suite
+- Create `tests/test_responses.py`
 - Test all command types
 - Test response variety
 - Test context handling
@@ -53,27 +59,28 @@
 - Test response appropriateness
 
 **Quality Improvements:**
-- Add response templates
-- Implement response personalization
+- Add response timing optimization
+- Implement response caching for common queries
 - Test conversational flow
 
 ### Timeline:
-- **Day 1-2**: Personality implementation
+- **Day 1-2**: Personality implementation + response templates
 - **Day 3**: Context-aware responses
-- **Day 4**: Response variations
-- **Day 5**: Error messages
+- **Day 4**: Response variations (5+ per type)
+- **Day 5**: User experience improvements
 - **Day 6**: Testing
 - **Day 7**: Documentation
 
 ### Success Criteria:
-- Personality working
+- Personality working (3 modes: friendly, professional, humorous)
 - Context awareness implemented
 - Response variety >5 per command type
 - Test coverage >80%
+- UX improvements documented
 
 ---
 
 ## Contact
 - Tech Lead: Jalaj
-- Questions: Team Whatsapp
+- Questions: Team Discord/Slack
 - Code Reviews: PR and tag Jalaj

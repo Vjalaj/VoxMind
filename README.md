@@ -141,11 +141,16 @@ VoxMind/
 - **Tejas**: Wake word detection, TTS, response generation
 - **Priyapal**: Advanced command parser (40+ patterns)
 - **Minakshi**: Text-to-speech implementation
-- **Swadhin**: Response generation
+- **Swadhin**: Response generation & user experience
 - **Sumant**: Wake word detection
 - **Soumyadeb**: Audio handling
 
 See individual `contribution.md` files in each folder.
+
+### Week 2 Tasks
+For latest task assignments and updates, visit: **https://github.com/your-repo/VoxMind/blob/main/tasks.md**
+
+Or view locally: `tasks.md` in project root
 
 ## Command Line Options
 
