@@ -55,7 +55,7 @@
 
 ---
 
-### Priyapal - Advanced Parser & NLP Integration
+### Sumant - Advanced Parser & NLP Integration
 **Task**: Expand parser and integrate NLP capabilities
 
 **Detailed Steps**:
@@ -180,7 +180,7 @@
 
 ---
 
-### Sumant - QA Lead & Wake Word Detection
+### Priyapal - QA Lead & Wake Word Detection
 **Task**: Quality assurance and wake word improvement
 
 **Detailed Steps**:
