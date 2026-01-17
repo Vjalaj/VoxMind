@@ -1,41 +1,40 @@
-# Priyapal - NLP & Command Parser Engineer
+
+
+# Priyapal - QA Lead & Wake Word Engineer
 
 ## Role
-Natural Language Processing & Command Parser Lead
+Quality Assurance Lead & Wake Word Detection
 
 ## Week 1 Responsibilities
-- Advanced command parser with 40+ patterns
-- Regex-based pattern matching
-- Parameter extraction
-- Wake word handling
-- Synonym support
-- Performance optimization
+- Wake word detection research
+- Testing different approaches
+- Collaboration on implementation
 
 ## Week 2 Responsibilities
-- Expand parser to 60+ patterns
-- Integrate NLP (sentence-transformers)
-- Context-aware parsing
-- Compound command support
-- Comprehensive testing
-- Documentation
+- Wake word accuracy improvement
+- QA lead for entire project
+- Test suite creation
+- Testing coordination
+- Test automation
+- Testing guidelines
 
 ## Key Technologies
-- Python regex
-- sentence-transformers (NLP)
-- spaCy (optional)
-- Hugging Face Transformers
-- pytest (testing)
+- speech_recognition (wake word)
+- Porcupine (local wake word - optional)
+- pytest (testing framework)
+- pytest-cov (coverage)
+- pytest-mock (mocking)
+- GitHub Actions (CI/CD)
 
 ## Deliverables
 ### Week 1:
-- Command parser with 40+ patterns
-- 12 command types supported
-- Parameter extraction system
-- Test cases
+- Wake word detection contribution
+- Initial testing
 
 ### Week 2:
-- Parser with 60+ patterns
-- NLP intent classifier (>90% accuracy)
-- Context-aware parsing
-- 100+ test cases
-- Command reference documentation
+- Improved wake word detector
+- Comprehensive test suite
+- Testing guidelines
+- Test automation
+- Coverage reports (>80%)
+- Performance metrics

@@ -12,7 +12,7 @@
 - Wake word detection tutorials
 - Porcupine documentation
 - ChatGPT for guidance
-- Stack Overflow
+- Stack Overflowz
 
 ### Challenges faced:
 1. **False positives**: Wake word triggering on similar sounds
@@ -24,55 +24,59 @@
 3. **Background noise**: Noisy environments affecting detection
    - Solution: Ambient noise adjustment
 
+
+
 ### Next steps (Week 2):
-- Improve wake word accuracy
-- Reduce false positive rate
-- Add sensitivity adjustment
-- Support multiple wake words
-- Implement local wake word detection (Porcupine)
-- Lead QA and testing efforts
+- Add 20+ more patterns (total 60+)
+- Implement NLP with sentence-transformers
+- Context-aware parsing
+- Compound command support
+- Comprehensive testing (100+ test cases)
 
 ---
 
-## Week 2: QA Lead & Wake Word Enhancement
+## Week 2: NLP Integration & Parser Enhancement
 
 ### What I will do:
 
-**Wake Word Enhancements:**
-- Reduce false positive rate
-- Improve detection in noisy environments
-- Add sensitivity adjustment
-- Support multiple wake words ("Hey Vox", "Vox")
-- Implement local wake word detection (Porcupine optional)
+**Parser Enhancements:**
+- Add 20+ more command patterns (total 60+)
+- Implement context-aware parsing
+- Add parameter validation
+- Support compound commands ("open browser and search for python")
+- Add command aliases and shortcuts
 
-**Quality Assurance (PRIMARY ROLE):**
-- Create comprehensive test suite
-- Test detection accuracy (true positive rate)
-- Test false positive rate
-- Test in different noise levels
-- Test with different speakers
-- Test detection latency
-- Test continuous listening stability
+**NLP Integration (HIGH PRIORITY):**
+- Integrate sentence-transformers for intent classification
+- Create training dataset (200+ examples)
+- Implement nlp_command_parser.py fully
+- Add confidence scoring
+- Fallback to pattern matching when confidence low
 
-**Testing Coordination:**
-- Help team members write tests
-- Review test coverage
-- Create testing guidelines
-- Document testing best practices
-- Set up test automation
+**Testing:**
+- Create comprehensive test suite (100+ test cases)
+- Test all 60+ patterns
+- Test NLP accuracy (>90% target)
+- Benchmark parsing speed
+- Edge case testing
+
+**Documentation:**
+- Document all supported patterns
+- Create command reference guide
+- NLP model documentation
 
 ### Timeline:
-- **Day 1-2**: Wake word improvements
-- **Day 3-4**: QA test suite creation
-- **Day 5**: Testing coordination
-- **Day 6**: Test automation
+- **Day 1-2**: Add 20+ new patterns
+- **Day 3-4**: NLP integration
+- **Day 5**: Context-aware parsing
+- **Day 6**: Testing suite
 - **Day 7**: Documentation
 
 ### Success Criteria:
-- Wake word accuracy >95%
-- False positive rate <5%
-- Test coverage >80% across all modules
-- Testing guidelines documented
+- 60+ patterns working
+- NLP accuracy >90%
+- Test coverage >85%
+- Documentation complete
 
 ---
 

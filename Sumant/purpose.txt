@@ -1,38 +1,41 @@
-# Sumant - QA Lead & Wake Word Engineer
+# Sumant - NLP & Command Parser Engineer
 
 ## Role
-Quality Assurance Lead & Wake Word Detection
+Natural Language Processing & Command Parser Lead
 
 ## Week 1 Responsibilities
-- Wake word detection research
-- Testing different approaches
-- Collaboration on implementation
+- Advanced command parser with 40+ patterns
+- Regex-based pattern matching
+- Parameter extraction
+- Wake word handling
+- Synonym support
+- Performance optimization
 
 ## Week 2 Responsibilities
-- Wake word accuracy improvement
-- QA lead for entire project
-- Test suite creation
-- Testing coordination
-- Test automation
-- Testing guidelines
+- Expand parser to 60+ patterns
+- Integrate NLP (sentence-transformers)
+- Context-aware parsing
+- Compound command support
+- Comprehensive testing
+- Documentation
 
 ## Key Technologies
-- speech_recognition (wake word)
-- Porcupine (local wake word - optional)
-- pytest (testing framework)
-- pytest-cov (coverage)
-- pytest-mock (mocking)
-- GitHub Actions (CI/CD)
+- Python regex
+- sentence-transformers (NLP)
+- spaCy (optional)
+- Hugging Face Transformers
+- pytest (testing)
 
 ## Deliverables
 ### Week 1:
-- Wake word detection contribution
-- Initial testing
+- Command parser with 40+ patterns
+- 12 command types supported
+- Parameter extraction system
+- Test cases
 
 ### Week 2:
-- Improved wake word detector
-- Comprehensive test suite
-- Testing guidelines
-- Test automation
-- Coverage reports (>80%)
-- Performance metrics
+- Parser with 60+ patterns
+- NLP intent classifier (>90% accuracy)
+- Context-aware parsing
+- 100+ test cases
+- Command reference documentation
