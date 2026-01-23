@@ -1,0 +1,6 @@
+sounddevice
+soundfile
+numpy
+noisereduce
+requests
+pytest
