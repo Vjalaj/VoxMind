@@ -26,28 +26,43 @@
 
 
 
-### Next steps (Week 2):
-- Add 20+ more patterns (total 60+)
-- Implement NLP with sentence-transformers
-- Context-aware parsing
-- Compound command support
-- Comprehensive testing (100+ test cases)
+### Next steps (Week 3):
+- Improve NLP model accuracy with custom fine-tuning
+- Add multi-language support (Hindi/English)
+- Optimize startup time by caching embeddings to disk
+- Integrate with Response Generation team
 
 ---
 
 ## Week 2: NLP Integration & Parser Enhancement
 
-### What I will do:
+### Status: Completed
 
-**Parser Enhancements:**
-- Add 20+ more command patterns (total 60+)
-- Implement context-aware parsing
-- Add parameter validation
-- Support compound commands ("open browser and search for python")
-- Add command aliases and shortcuts
+### What I did:
+- **Parser Enhancements:**
+  - Implemented `AdvancedCommandParser` class
+  - Added support for 60+ patterns across 8 categories (Browser, Search, System, etc.)
+  - Implemented **Context-Aware Parsing** (remembers last intent)
+  - Added **Compound Command Support** (split by 'and', 'then')
+  - Added parameter validation (e.g., volume 0-100)
 
-**NLP Integration (HIGH PRIORITY):**
-- Integrate sentence-transformers for intent classification
+- **NLP Integration:**
+  - Integrated `sentence-transformers` (model: `all-MiniLM-L6-v2`)
+  - Implemented hybrid parsing (Regex + NLP fallback)
+  - Singleton pattern for model loading to improve performance
+
+### Resources used:
+- Tejas's `nlp_command_parser.py` (analyzed for sentence-transformer usage)
+- Hugging Face SBERT documentation
+- Python `re` module docs
+
+### Challenges faced:
+1. **Model Loading Time**: `sentence-transformers` is heavy.
+   - *Solution*: Implemented Singleton pattern and lazy loading in `AdvancedCommandParser`.
+
+2. **Compound Commands**: Splitting logic was tricky.
+   - *Solution*: Used `re.split` with 'and'/'then' separators.
+
 - Create training dataset (200+ examples)
 - Implement nlp_command_parser.py fully
 - Add confidence scoring
