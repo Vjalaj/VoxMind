@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # VoxMind C++ Core
 
 This is a complete rewrite of the VoxMind engine in C++ (C++17), designed for performance, modularity, and accuracy.
