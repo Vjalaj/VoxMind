@@ -1,0 +1,8 @@
+# tests/data/wake_negative.txt
+# Lines that SHOULD NOT trigger
+open chrome
+what is the time
+check my email
+box is on the table
+folks are coming over
+fox jumped over the dog

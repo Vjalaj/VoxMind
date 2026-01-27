@@ -1,0 +1,39 @@
+# Swadhin - Response Generation & User Experience Engineer
+
+## Role
+Response Generation & User Experience Lead
+
+## Week 1 Responsibilities
+- Response generation system
+- Response templates creation
+- Contextual responses
+- Response variety
+
+## Week 2 Responsibilities
+- Response personality (friendly, professional, humorous)
+- Context-aware responses
+- Response variations (5+ per command type)
+- User experience improvements
+- Response template system
+- Conversational flow
+- Comprehensive testing
+
+## Key Technologies
+- Python (response generation)
+- Template engines
+- Context management
+- pytest (testing)
+
+## Deliverables
+### Week 1:
+- Response generator
+- Response templates
+- Contextual responses
+
+### Week 2:
+- Enhanced response generator with personality
+- Response template system
+- 5+ variations per command type
+- UX improvements
+- Test suite
+- Response quality report

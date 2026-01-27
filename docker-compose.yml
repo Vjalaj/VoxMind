@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    image: voxmind-app:dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app:rw
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "main.py"]

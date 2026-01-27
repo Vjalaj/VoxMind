@@ -1,0 +1,40 @@
+# Soumyadeb - Backend & Audio Processing Engineer
+
+## Role
+Audio Processing & Backend Services Lead
+
+## Week 1 Responsibilities
+- Audio input/output handling
+- Microphone stream management
+- Device configuration
+- Basic audio processing
+
+## Week 2 Responsibilities
+- Audio quality enhancement (noise reduction)
+- Backend API integration (weather)
+- Database setup (SQLite)
+- Caching system
+- User profiles
+- Comprehensive testing
+
+## Key Technologies
+- PyAudio (audio I/O)
+- noisereduce (noise reduction)
+- OpenWeatherMap API
+- SQLite (database)
+- Redis (caching - optional)
+- pytest (testing)
+
+## Deliverables
+### Week 1:
+- Audio handler module
+- Device management
+- Audio stream processing
+
+### Week 2:
+- Enhanced audio processing
+- Weather API integration
+- Conversation history database
+- Caching system
+- Test suite
+- Audio quality benchmark

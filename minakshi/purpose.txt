@@ -1,0 +1,38 @@
+# minakshi - Voice & TTS Engineer
+
+## Role
+Text-to-Speech & Voice Quality Lead
+
+## Week 1 Responsibilities
+- Text-to-speech implementation (pyttsx3)
+- Voice synthesis for responses
+- Speech rate and volume control
+- Error handling
+
+## Week 2 Responsibilities
+- Voice selection (male/female)
+- Multi-language support (Hindi optional)
+- Voice quality improvements
+- Emotion in voice
+- User experience sounds
+- Comprehensive testing
+
+## Key Technologies
+- pyttsx3 (TTS engine)
+- SSML (Speech Synthesis Markup Language)
+- Audio libraries (playsound, pygame)
+- pytest (testing)
+
+## Deliverables
+### Week 1:
+- Working TTS module
+- Voice synthesis
+- Basic voice controls
+
+### Week 2:
+- Multiple voice options
+- Enhanced voice quality
+- Language support
+- UX sounds
+- Test suite
+- Voice quality report

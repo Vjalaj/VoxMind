@@ -1,0 +1,316 @@
+{
+  "nodes": [
+    {
+      "id": "hub-1768458938183",
+      "position": {
+        "x": 578.48,
+        "y": -21.08000000000004
+      },
+      "data": {
+        "label": "Tasks",
+        "notes": "",
+        "image": ""
+      },
+      "style": {
+        "shape": "custom",
+        "color": "#000000",
+        "borderColor": "#ffffff",
+        "customShape": {
+          "vertices": 7,
+          "centerDistance": 20,
+          "outerRadius": 50,
+          "autoMode": false
+        },
+        "fontWeight": "bold",
+        "glow": true,
+        "backgroundImage": "linear-gradient(135deg, #e4950c, #e6e265)"
+      },
+      "width": 150,
+      "height": 150,
+      "isHub": true,
+      "power": 0
+    },
+    {
+      "id": "node-1768459030159",
+      "position": {
+        "x": 780.48,
+        "y": 353.91999999999996
+      },
+      "data": {
+        "label": "Jalaj",
+        "notes": "<div><div style=\"\">Tech Lead &amp; System Integration</div><div style=\"\">Task: Lead integration, architecture, and coordination</div><br><b>Detailed Steps</b>:</div><div><br></div><div><ol><li><b>Integration Leadership</b>:<br><div>Add configuration file support (config.json)</div><div>Implement logging system (Python logging)</div><div>Add conversation history tracking</div><div>Improve error recovery mechanisms</div><div>Code review for all team members</div><br><br></li><li><div><b>System Testing</b>:</div><div>Create tests/test_integration.py</div><div>Test complete voice pipeline</div><div>Test all command types end-to-end</div><div>Test error scenarios</div><div>Performance testing (response time, memory)</div><br></li><li><span style=\"color: rgb(3, 7, 18);\"><b>Documentation &amp; Architecture</b>:</span><br><div>Update README with new features</div><div>Create troubleshooting guide</div><div>Document system architecture</div><div>Create API documentation</div><br></li><li><span style=\"color: rgb(3, 7, 18);\"><b>Deliverables</b>:</span><br><div>Enhanced main.py with config and logging</div><div>Comprehensive integration test suite</div><div>System architecture documentation</div><div>Team coordination and code reviews</div><div>Time Estimate: 20-25 hours</div><br></li><li><span style=\"color: rgb(3, 7, 18);\"><b>Resources</b>:</span><br><div>Python logging: https://docs.python.org/3/library/logging.html</div><div>JSON config: https://docs.python.org/3/library/json.html</div><div>pytest: https://docs.pytest.org/</div><div>System design: https://github.com/donnemartin/system-design-primer</div><div>Code review: https://google.github.io/eng-practices/review/</div></li></ol></div><div><br></div>",
+        "image": "",
+        "contentStyle": {
+          "useGradient": true,
+          "backgroundImage": "",
+          "gradientDirection": "45deg",
+          "gradientStart": "#8293de",
+          "gradientEnd": "#abf7c2"
+        }
+      },
+      "style": {
+        "shape": "circle",
+        "backgroundColor": "#f97316",
+        "borderColor": "#f97316"
+      },
+      "width": 80,
+      "height": 80,
+      "power": 1
+    },
+    {
+      "id": "node-1768459443853",
+      "position": {
+        "x": 301.48,
+        "y": -232.08000000000004
+      },
+      "data": {
+        "label": "Priyapal",
+        "notes": "<div><div style=\"\">Advanced Parser &amp; NLP Integration</div><div style=\"\">Task: Expand parser and integrate NLP capabilities</div><br><b>Detailed Steps</b>:</div><div><br></div><div><ol><li><b>Parser Enhancements</b>:<br><div>Add 20+ more command patterns (total 60+)</div><div>Implement context-aware parsing</div><div>Add parameter validation</div><div>Support compound commands (\"open browser and search for python\")</div><div>Add command aliases and shortcuts</div><br></li><li><b>NLP Integration</b> (HIGH PRIORITY):<br><div>Integrate sentence-transformers for intent classification</div><div>Create training dataset (200+ examples)</div><div>Implement the nlp_command_parser.py fully</div><div>Add confidence scoring and fallback to pattern matching</div><br></li><li><b>Testing</b>:<br><div>Create tests/test_parser.py</div><div>Test all 60+ command patterns</div><div>Test NLP accuracy (target &gt;90%)</div><div>Test edge cases and benchmark parsing speed</div><br></li><li><b>Documentation</b>:<br><div>Document all supported patterns</div><div>Create command reference guide</div><div>NLP model documentation</div><br></li></ol></div><div><br></div><div><b>Deliverables</b>: Parser with 60+ patterns; working NLP intent classifier; comprehensive test suite (100+ tests); command reference documentation. Time Estimate: 25-30 hours</div>",
+        "image": "",
+        "contentStyle": {
+          "useGradient": true,
+          "backgroundImage": "",
+          "gradientDirection": "45deg",
+          "gradientStart": "#8293de",
+          "gradientEnd": "#abf7c2"
+        }
+      },
+      "style": {
+        "shape": "circle",
+        "backgroundColor": "#ec4899",
+        "borderColor": "#ec4899"
+      },
+      "width": 80,
+      "height": 80,
+      "power": 1
+    },
+    {
+      "id": "node-1768461000001",
+      "position": {
+        "x": 1001.48,
+        "y": 106.92000000000002
+      },
+      "data": {
+        "label": "Minakshi",
+        "notes": "<div><div style=\"\">TTS Enhancement &amp; Voice Quality</div><div style=\"\">Task: Improve text-to-speech and voice experience</div><br><b>Detailed Steps</b>:</div><div><br></div><div><ol><li><b>TTS Enhancements</b>:<br><div>Add voice selection (male/female voices)</div><div>Implement speech rate adjustment</div><div>Add volume control for TTS</div><div>Support different languages (Hindi optional)</div><div>Queue system for multiple responses</div><br></li><li><b>Voice Quality</b>:<br><div>Add pronunciation corrections for common words</div><div>Implement SSML support if available</div><div>Test clarity and naturalness</div><div>Add emotion in voice (happy, sad, neutral)</div><br></li><li><b>User Experience</b>:<br><div>Add voice feedback sounds (beep on activation)</div><div>Implement \"thinking\" sound while processing</div><div>Add confirmation sounds</div><br></li><li><b>Testing</b>:<br><div>Create tests/test_tts.py</div><div>Test different text lengths</div><div>Test special characters and numbers</div><div>Test voice property changes</div><div>Test error handling and performance</div><br></li></ol></div><div><br></div><div><b>Deliverables</b>: Enhanced TTS module with voice options; complete test suite for TTS; voice quality comparison report; user experience improvements. Time Estimate: 15-20 hours</div>",
+        "image": "",
+        "contentStyle": {
+          "useGradient": true,
+          "backgroundImage": "",
+          "gradientDirection": "45deg",
+          "gradientStart": "#8293de",
+          "gradientEnd": "#abf7c2"
+        }
+      },
+      "style": {
+        "shape": "circle",
+        "backgroundColor": "#06b6d4",
+        "borderColor": "#06b6d4"
+      },
+      "width": 80,
+      "height": 80,
+      "power": 1
+    },
+    {
+      "id": "node-1768461000002",
+      "position": {
+        "x": 943.48,
+        "y": -241.92000000000002
+      },
+      "data": {
+        "label": "Soumyadeb",
+        "notes": "<div><div style=\"\">Audio Processing &amp; Backend Services</div><div style=\"\">Task: Audio quality and backend infrastructure</div><br><b>Detailed Steps</b>:</div><div><br></div><div><ol><li><b>Audio Enhancements</b>:<br><div>Implement noise reduction</div><div>Add audio level monitoring</div><div>Support multiple audio devices</div><div>Add audio recording quality settings</div><div>Implement audio buffering</div><br></li><li><b>Backend Services</b>:<br><div>Weather API integration (OpenWeatherMap)</div><div>Create API wrapper for external services</div><div>Implement caching for API responses</div><div>Build conversation history database (SQLite)</div><div>User profiles storage</div><br></li><li><b>Testing</b>:<br><div>Create tests/test_audio.py</div><div>Test different sample rates</div><div>Test different audio formats</div><div>Test device switching</div><div>Test noise reduction effectiveness</div><br></li><li><b>Infrastructure</b>:<br><div>Set up logging infrastructure</div><div>Create backup system for user data</div><div>Implement error tracking</div><br></li></ol></div><div><br></div><div><b>Deliverables</b>: Enhanced audio handler with quality improvements; working backend API integrations; conversation history database; complete audio test suite. Time Estimate: 20-25 hours</div>",
+        "image": "",
+        "contentStyle": {
+          "useGradient": true,
+          "backgroundImage": "",
+          "gradientDirection": "45deg",
+          "gradientStart": "#8293de",
+          "gradientEnd": "#abf7c2"
+        }
+      },
+      "style": {
+        "shape": "circle",
+        "backgroundColor": "#ef4444",
+        "borderColor": "#ef4444"
+      },
+      "width": 80,
+      "height": 80,
+      "power": 1
+    },
+    {
+      "id": "node-1768461000003",
+      "position": {
+        "x": 459.48,
+        "y": 327.08
+      },
+      "data": {
+        "label": "Sumant",
+        "notes": "<div><div style=\"\">QA Lead &amp; Wake Word Detection</div><div style=\"\">Task: Quality assurance and wake word improvement</div><br><b>Detailed Steps</b>:</div><div><br></div><div><ol><li><b>Wake Word Enhancements</b>:<br><div>Reduce false positive rate</div><div>Improve detection in noisy environments</div><div>Add sensitivity adjustment</div><div>Support multiple wake words (\"Hey Vox\", \"Vox\")</div><div>Implement local wake word detection (Porcupine optional)</div><br></li><li><b>Quality Assurance</b>:<br><div>Create tests/test_wake_word.py</div><div>Test detection accuracy (true positive rate)</div><div>Test false positive rate</div><div>Test in different noise levels and with different speakers</div><div>Test detection latency and continuous listening stability</div><br></li><li><b>Testing Coordination</b>:<br><div>Help team members write tests</div><div>Review test coverage</div><div>Create testing guidelines and document best practices</div><br></li></ol></div><div><br></div><div><b>Deliverables</b>: Improved wake word detector; complete test suite with accuracy metrics; testing guidelines document. Time Estimate: 20-25 hours</div><div><br></div><div><b>Resources</b>: Porcupine wake word: https://picovoice.ai/platform/porcupine/; pytest: https://docs.pytest.org/; pytest-cov: https://pytest-cov.readthedocs.io/; Test automation: https://testautomationuniversity.com/; QA best practices: https://www.ministryoftesting.com/</div>",
+        "image": "",
+        "contentStyle": {
+          "useGradient": true,
+          "backgroundImage": "",
+          "gradientDirection": "45deg",
+          "gradientStart": "#8293de",
+          "gradientEnd": "#abf7c2"
+        }
+      },
+      "style": {
+        "shape": "circle",
+        "backgroundColor": "#3b82f6",
+        "borderColor": "#3b82f6"
+      },
+      "width": 80,
+      "height": 80,
+      "power": 1
+    },
+    {
+      "id": "node-1768461000004",
+      "position": {
+        "x": 136.48000000000002,
+        "y": 127.08000000000004
+      },
+      "data": {
+        "label": "Tejas",
+        "notes": "<div><div style=\"\">Feature Development &amp; Integration Testing</div><div style=\"\">Task: Implement new features and comprehensive testing</div><br><b>Detailed Steps</b>:</div><div><br></div><div><ol><li><b>New Feature Implementation</b>:<br><div><b>Weather Information</b>: Integrate OpenWeatherMap API; commands: \"what's the weather\", \"weather in [city]\"; display temperature, conditions, forecast</div><div><b>Math Calculations</b>: Parse math expressions (support +, -, *, /, ^ and parentheses)</div><div><b>Unit Conversions</b>: Convert units (distance, weight, temperature, time) using `pint`</div><div><b>Command History</b>: Track last 50 commands; commands: \"what did I ask before\", \"repeat last command\"; store in SQLite</div><br></li><li><b>Integration Testing</b>:<br><div>Create tests/test_features.py</div><div>Test all new features and interactions</div><div>Regression testing to ensure Week 1 features still work</div><br></li><li><b>CI/CD Setup</b>:<br><div>Set up GitHub Actions to run tests</div><div>Automate builds and coverage reporting</div><br></li><li><b>Documentation</b>:<br><div>Update user guide with new features</div><div>Create feature comparison matrix</div><div>Document APIs and usage examples</div><br></li></ol></div><div><br></div><div><b>Deliverables</b>: 4 new feature types (weather, math, conversions, history); complete feature test suite; CI/CD pipeline; updated documentation; demo video. Time Estimate: 25-30 hours</div>",
+        "image": "",
+        "contentStyle": {
+          "useGradient": true,
+          "backgroundImage": "",
+          "gradientDirection": "45deg",
+          "gradientStart": "#8293de",
+          "gradientEnd": "#abf7c2"
+        }
+      },
+      "style": {
+        "shape": "circle",
+        "backgroundColor": "#22c55e",
+        "borderColor": "#22c55e"
+      },
+      "width": 80,
+      "height": 80,
+      "power": 1
+    },
+    {
+      "id": "node-1768461000005",
+      "position": {
+        "x": 578.48,
+        "y": 427.08
+      },
+      "data": {
+        "label": "Swadhin",
+        "notes": "<div><div style=\"\">Response Generation &amp; User Experience</div><div style=\"\">Task: Enhance response system and improve user experience</div><br><b>Detailed Steps</b>:</div><div><br></div><div><ol><li><b>Response Enhancements</b>:<br><div>Add personality to responses (friendly, professional, humorous)</div><div>Implement context-aware responses</div><div>Add response variations (5+ per command type)</div><div>Support multi-sentence responses</div><div>Add error message improvements</div><br></li><li><b>User Experience</b>:<br><div>Create conversational flow</div><div>Add follow-up question handling</div><div>Implement confirmation dialogs for critical actions</div><div>Add helpful suggestions in responses</div><div>Create onboarding responses for new users</div><br></li><li><b>Response Templates</b>:<br><div>Build response template system</div><div>Create templates for all command types</div><div>Add dynamic content insertion</div><div>Implement response personalization</div><br></li><li><b>Testing</b>:<br><div>Create tests/test_responses.py</div><div>Test all command types and response variety</div><div>Test context handling and error responses</div><div>Test response appropriateness</div><br></li><li><b>Quality Improvements</b>:<br><div>Add response timing optimization</div><div>Implement response caching for common queries</div><div>Test conversational flow</div><br></li></ol></div><div><br></div><div><b>Deliverables</b>: Enhanced response generator with personality; response template system; 5+ variations per command type; complete response test suite; UX improvement documentation. Time Estimate: 20-25 hours</div><div><br></div><div><b>Resources</b>: Conversational design: https://developers.google.com/assistant/conversation-design; UX writing: https://uxwritinghub.com/; Response templates: https://www.nngroup.com/articles/</div>",
+        "image": "",
+        "contentStyle": {
+          "useGradient": true,
+          "backgroundImage": "",
+          "gradientDirection": "45deg",
+          "gradientStart": "#8293de",
+          "gradientEnd": "#abf7c2"
+        }
+      },
+      "style": {
+        "shape": "circle",
+        "backgroundColor": "#a855f7",
+        "borderColor": "#a855f7"
+      },
+      "width": 80,
+      "height": 80,
+      "power": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-node-1768459443853-hub-1768458938183-1768460760695",
+      "sourceId": "node-1768459443853",
+      "targetId": "hub-1768458938183",
+      "style": {
+        "color": "#64748b",
+        "width": 2,
+        "type": "solid",
+        "curve": "straight"
+      }
+    },
+    {
+      "id": "edge-node-1768461000004-hub-1768458938183-1768460764159",
+      "sourceId": "node-1768461000004",
+      "targetId": "hub-1768458938183",
+      "style": {
+        "color": "#64748b",
+        "width": 2,
+        "type": "solid",
+        "curve": "straight"
+      }
+    },
+    {
+      "id": "edge-node-1768461000003-hub-1768458938183-1768460767576",
+      "sourceId": "node-1768461000003",
+      "targetId": "hub-1768458938183",
+      "style": {
+        "color": "#64748b",
+        "width": 2,
+        "type": "solid",
+        "curve": "straight"
+      }
+    },
+    {
+      "id": "edge-node-1768461000002-hub-1768458938183-1768460770464",
+      "sourceId": "node-1768461000002",
+      "targetId": "hub-1768458938183",
+      "style": {
+        "color": "#64748b",
+        "width": 2,
+        "type": "solid",
+        "curve": "straight"
+      }
+    },
+    {
+      "id": "edge-node-1768461000001-hub-1768458938183-1768460773256",
+      "sourceId": "node-1768461000001",
+      "targetId": "hub-1768458938183",
+      "style": {
+        "color": "#64748b",
+        "width": 2,
+        "type": "solid",
+        "curve": "straight"
+      }
+    },
+    {
+      "id": "edge-node-1768459030159-hub-1768458938183-1768460776872",
+      "sourceId": "node-1768459030159",
+      "targetId": "hub-1768458938183",
+      "style": {
+        "color": "#64748b",
+        "width": 2,
+        "type": "solid",
+        "curve": "straight"
+      }
+    },
+    {
+      "id": "edge-node-1768461000005-hub-1768458938183-1768460780000",
+      "sourceId": "node-1768461000005",
+      "targetId": "hub-1768458938183",
+      "style": {
+        "color": "#64748b",
+        "width": 2,
+        "type": "solid",
+        "curve": "straight"
+      }
+    }
+  ],
+  "background": "url(https://images.pexels.com/photos/34349746/pexels-photo-34349746.jpeg)|cover",
+  "customBackground": "#f8fafc",
+  "viewMode": "edit",
+  "defaultLineStyle": {
+    "color": "#64748b",
+    "width": 2,
+    "type": "solid",
+    "curve": "straight"
+  },
+  "viewState": {
+    "x": 282.52,
+    "y": 361.08000000000004,
+    "zoom": 1
+  }
+}

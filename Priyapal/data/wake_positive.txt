@@ -1,0 +1,7 @@
+# tests/data/wake_positive.txt
+# Lines that SHOULD trigger
+hey vox open chrome
+ok vox what is the time
+hey voxmind check my email
+vox what is the weather
+vox play some music
