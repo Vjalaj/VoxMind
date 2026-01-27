@@ -1,0 +1,230 @@
+browser_open: open browser
+browser_open: launch chrome
+browser_open: start firefox
+browser_open: open internet
+browser_open: go to google
+browser_open: browse web
+browser_open: open edge
+browser_open: start browser
+browser_open: launch web browser
+browser_open: open google chrome
+browser_open: start mozilla firefox
+
+search_web: search for
+search_web: google this
+search_web: find information about
+search_web: what is the
+search_web: who is
+search_web: look up
+search_web: tell me about
+search_web: search on google
+search_web: find me details about
+search_web: lookup
+search_web: check online for
+search_web: ask google about
+
+time_check: what time is it
+time_check: current time
+time_check: tell me the time
+time_check: what's the time
+time_check: do you have the time
+time_check: clock status
+time_check: what is the current time
+time_check: tell me time
+
+date_check: what is the date
+date_check: what's today's date
+date_check: current date
+date_check: what day is it
+date_check: today's date
+date_check: what is today
+date_check: tell me the date
+
+volume_mute: mute volume
+volume_mute: silence
+volume_mute: turn off sound
+volume_mute: be quiet
+volume_mute: mute sound
+volume_mute: stop audio
+volume_mute: silence the computer
+volume_mute: quiet mode
+
+volume_up: increase volume
+volume_up: volume up
+volume_up: turn it up
+volume_up: louder
+volume_up: make it louder
+volume_up: increase sound
+volume_up: volume higher
+
+volume_down: decrease volume
+volume_down: volume down
+volume_down: turn it down
+volume_down: softer
+volume_down: make it quieter
+volume_down: decrease sound
+volume_down: volume lower
+
+shutdown_system: shutdown computer
+shutdown_system: turn off pc
+shutdown_system: power off
+shutdown_system: kill system
+shutdown_system: goodbye vox
+shutdown_system: exit system
+shutdown_system: turn everything off
+shutdown_system: stop computer
+
+notepad_open: open notepad
+notepad_open: start text editor
+notepad_open: write a note
+notepad_open: launch notepad
+notepad_open: open a text file
+notepad_open: start notepad
+
+calculator_open: open calculator
+calculator_open: start calculator
+calculator_open: do some math
+calculator_open: launch calc
+calculator_open: open the calculator
+
+mouse_click: click here
+mouse_click: left click
+mouse_click: press mouse
+mouse_click: click the mouse
+mouse_click: mouse click
+
+mouse_double_click: double click
+mouse_double_click: open this file
+mouse_double_click: double click the mouse
+mouse_double_click: click twice
+
+mouse_right_click: right click
+mouse_right_click: show menu
+mouse_right_click: mouse right click
+mouse_right_click: click right button
+
+mouse_move_up: move mouse up
+mouse_move_up: cursor up
+mouse_move_up: go up
+mouse_move_up: move the mouse higher
+
+mouse_move_down: move mouse down
+mouse_move_down: cursor down
+mouse_move_down: go down
+mouse_move_down: move the mouse lower
+
+mouse_move_left: move mouse left
+mouse_move_left: cursor left
+mouse_move_left: go left
+
+mouse_move_right: move mouse right
+mouse_move_right: cursor right
+mouse_move_right: go right
+
+keyboard_type: type
+keyboard_type: write
+keyboard_type: enter text
+keyboard_type: input text
+
+window_close: close window
+window_close: close this
+window_close: exit program
+window_close: close application
+window_close: quit this window
+
+window_maximize: maximize window
+window_maximize: make it full screen
+window_maximize: full size
+window_maximize: expand window
+
+window_minimize: minimize window
+
+window_minimize: hide window
+
+window_minimize: minimize this
+
+window_minimize: go to desktop
+
+window_minimize: show desktop
+
+
+
+search_web: what is
+
+search_web: who is
+
+search_web: find
+
+search_web: tell me about
+
+search_web: search for
+
+search_web: look up
+
+search_web: check for
+
+search_web: search on google
+
+search_web: ask vox about
+
+search_web: check online
+
+search_web: search web for
+
+
+
+mouse_click: click
+
+mouse_click: mouse click
+
+mouse_click: left click
+
+mouse_click: select this
+
+mouse_click: click here
+
+mouse_click: tap
+
+
+
+mouse_move_up: move up
+
+mouse_move_up: scroll up
+
+mouse_move_up: go up
+
+mouse_move_up: cursor up
+
+mouse_move_up: mouse up
+
+
+
+mouse_move_down: move down
+
+mouse_move_down: scroll down
+
+mouse_move_down: go down
+
+mouse_move_down: cursor down
+
+mouse_move_down: mouse down
+
+
+
+mouse_move_left: move left
+
+mouse_move_left: go left
+
+mouse_move_left: cursor left
+
+mouse_move_left: mouse left
+
+
+
+mouse_move_right: move right
+
+mouse_move_right: go right
+
+mouse_move_right: cursor right
+
+mouse_move_right: mouse right
