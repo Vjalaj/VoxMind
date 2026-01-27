@@ -1,4 +1,3 @@
-=======
 # VoxMind — Voice Assistant
 
 ## Overview
