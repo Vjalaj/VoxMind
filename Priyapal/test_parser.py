@@ -1,18 +1,18 @@
 from command_parser import parse_command
 
 samples = [
-    "Jarvis open the browser",
-    "Jarvis launch chrome",
-    "Jarvis search for quantum tunneling",
-    "Jarvis what's the time",
-    "Jarvis please shut down the computer",
-    "Jarvis mute the volume",
-    "Jarvis open vscode",
-    "Jarvis open downloads folder",
-    "Jarvis what can you do",
-    "Jarvis go back",
-    "Jarvis play next song",
-    "Jarvis scroll down",
+    "VoxMind open the browser",
+    "VoxMind launch chrome",
+    "VoxMind search for quantum tunneling",
+    "VoxMind what's the time",
+    "VoxMind please shut down the computer",
+    "VoxMind mute the volume",
+    "VoxMind open vscode",
+    "VoxMind open downloads folder",
+    "VoxMind what can you do",
+    "VoxMind go back",
+    "VoxMind play next song",
+    "VoxMind scroll down",
 ]
 
 for s in samples:

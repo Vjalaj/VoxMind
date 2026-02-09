@@ -10,7 +10,7 @@
     - control_volume, control_app, open_path
     - assistant_help, navigate, media_control, scroll
   - Parameter extraction (browser names, search queries, app names, etc.)
-  - Wake word stripping (jarvis, hey jarvis, ok jarvis, hey vox, vox)
+  - Wake word stripping (voxmind, hey voxmind, ok voxmind, hey vox, vox)
   - Fast-fail keyword indexing for performance
   - Synonym support and natural language variations
   - Smart fallback to search for unknown commands

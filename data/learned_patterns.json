@@ -1,0 +1,21 @@
+{
+  "patterns": {
+    "what time is it?": {
+      "pattern": "what time is it?",
+      "action": "plugin_query",
+      "confidence": 0.5,
+      "occurrences": 1,
+      "last_seen": 1769957530.6962821,
+      "success_rate": 1.0
+    },
+    "calculate <NUM> * <NUM>": {
+      "pattern": "calculate <NUM> * <NUM>",
+      "action": "plugin_query",
+      "confidence": 0.5,
+      "occurrences": 1,
+      "last_seen": 1769957530.699657,
+      "success_rate": 1.0
+    }
+  },
+  "preferences": {}
+}

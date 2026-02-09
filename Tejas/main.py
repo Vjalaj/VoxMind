@@ -14,9 +14,9 @@ if ROOT not in sys.path:
 
 from Jalaj.speech_recognition_service import listen_for_command
 from Tejas.wake_word_detector import listen_for_wake_word
-from Tejas.command_parser import parse_command
+from Priyapal.command_parser import parse_command  # Use canonical parser
 from Tejas.response_generator import generate_response
-from Tejas.text_to_speech import speak_text
+from minakshi.text_to_speech import speak_text  # Use canonical TTS
 
 
 def run_loop(simulate: bool = False, no_tts: bool = False):

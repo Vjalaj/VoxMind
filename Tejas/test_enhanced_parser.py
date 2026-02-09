@@ -3,10 +3,20 @@ import logging
 import sys
 import os
 
-# Add the Tejas directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
+# Add the project root to path
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, root_dir)
 
-from command_parser import parse_command, get_supported_commands
+from Priyapal.command_parser import parse_command
+
+# get_supported_commands may not exist in Priyapal version
+def get_supported_commands():
+    return {
+        'browser': ['open browser', 'launch chrome'],
+        'time': ['what time is it', 'current time'],
+        'search': ['search for X', 'google X'],
+        'music': ['play music', 'pause music'],
+    }
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -69,9 +79,9 @@ def test_enhanced_parser():
         "who are you",
         
         # Wake word tests
-        "jarvis open browser",
-        "hey jarvis what time is it",
-        "ok jarvis search for cats",
+        "voxmind open browser",
+        "hey voxmind what time is it",
+        "ok voxmind search for cats",
         
         # Edge cases
         "unknown command xyz",

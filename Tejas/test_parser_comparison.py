@@ -3,11 +3,12 @@ import logging
 import sys
 import os
 
-# Add the Tejas directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
+# Add the project root to path
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, root_dir)
 
-from command_parser import parse_command
-from nlp_command_parser import parse_command_nlp, get_nlp_status
+from Priyapal.command_parser import parse_command
+from Tejas.nlp_command_parser import parse_command_nlp, get_nlp_status
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')

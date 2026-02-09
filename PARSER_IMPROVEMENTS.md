@@ -13,7 +13,7 @@
 - **Help Commands**: NEW - "what can you do", "who are you", "capabilities"
 
 ### 2. **Wake Word Handling**
-- Automatically strips "jarvis", "hey jarvis", "ok jarvis", "assistant" prefixes
+- Automatically strips "voxmind", "hey voxmind", "ok voxmind", "assistant" prefixes
 - Processes the actual command after wake word removal
 
 ### 3. **Logging & Debugging**
@@ -68,9 +68,9 @@ result = parse_command("search for python", log_matches=True)
 
 ### Wake Word Handling
 ```python
-result = parse_command("jarvis what time is it")
-# Automatically strips "jarvis" and processes "what time is it"
-# Returns: {'type': 'time', 'raw': 'jarvis what time is it'}
+result = parse_command("voxmind what time is it")
+# Automatically strips "voxmind" and processes "what time is it"
+# Returns: {'type': 'time', 'raw': 'voxmind what time is it'}
 ```
 
 ## Performance Impact

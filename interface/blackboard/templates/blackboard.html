@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoxMind Mathematics Blackboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='blackboard.css') }}">
+    <!-- KaTeX for LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- Google Fonts for chalk-like text -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="blackboard-frame">
+        <div class="blackboard">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="chalk-title">📐 VoxMind Mathematics</h1>
+                <p class="chalk-subtitle">Solve any math problem with step-by-step solutions</p>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-section">
+                <div class="input-container">
+                    <input type="text" 
+                           id="mathInput" 
+                           class="chalk-input" 
+                           placeholder="Ask a math question... (e.g., integral of cos^2 x dx)"
+                           autocomplete="off">
+                    <button id="solveBtn" class="chalk-button">Solve ✨</button>
+                </div>
+                <div class="voice-hint">
+                    <span class="mic-icon">🎤</span> Or say: "Hey Vox, what is the integral of cos squared x"
+                </div>
+            </div>
+
+            <!-- Results Area -->
+            <div id="resultsArea" class="results-section">
+                <!-- Results will be inserted here -->
+            </div>
+
+            <!-- Examples Section -->
+            <div class="examples-section">
+                <h2 class="chalk-heading">📚 Example Problems</h2>
+                <div id="examplesContainer" class="examples-grid">
+                    <!-- Examples will be loaded here -->
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="history-section">
+                <h2 class="chalk-heading">📜 Recent Problems</h2>
+                <div id="historyContainer" class="history-list">
+                    <!-- History will be shown here -->
+                </div>
+            </div>
+
+            <!-- Chalk dust decoration -->
+            <div class="chalk-dust dust-1"></div>
+            <div class="chalk-dust dust-2"></div>
+            <div class="chalk-dust dust-3"></div>
+        </div>
+        
+        <!-- Chalk tray -->
+        <div class="chalk-tray">
+            <div class="chalk white"></div>
+            <div class="chalk yellow"></div>
+            <div class="chalk pink"></div>
+            <div class="chalk blue"></div>
+            <div class="eraser"></div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p class="loading-text">Calculating...</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='blackboard.js') }}"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-"""Simple speech recognition helper for VoxMind (Jalaj).
+"""Simple speech recognition helper for VoxMind.
 
 Provides `listen_for_command()` which listens from the default microphone,
 adjusts for ambient noise and uses Google Web Speech API via SpeechRecognition.

@@ -16,6 +16,7 @@ PyAudio>=0.2.11
 # Soumyadeb section
 # Soumyadeb can add his requirements here
 PyAudio>=0.2.11
+pycaw>=20230407
 
 # End of Soumyadeb section
 
@@ -27,6 +28,9 @@ PyAudio>=0.2.11
 # Tejas section
 # Tejas can add his requirements here
 # Tejas integration helpers (no external deps listed)
+sentence-transformers>=2.2.2
+torch>=2.0.0
+numpy>=1.24.0
 
 # End of Tejas section
 
@@ -39,3 +43,53 @@ PyAudio>=0.2.11
 # Minakshi can add her requirements here
 pyttsx3>=2.90
 # End of Minakshi section
+
+# =============================================================================
+# Advanced Speech Recognition (faster-whisper for local STT)
+# =============================================================================
+# Core: pip install faster-whisper (recommended, 4x faster than OpenAI whisper)
+faster-whisper>=0.10.0
+
+# Alternative: Vosk for lightweight offline STT
+vosk>=0.3.45
+
+# Wake Word Detection (optional but recommended)
+# pvporcupine requires API key from https://picovoice.ai/
+# pip install pvporcupine  # Uncomment if you have API key
+
+# =============================================================================
+# Core VoxMind features
+# =============================================================================
+# Voice Access (mouse/keyboard automation)
+pyautogui>=0.9.54
+pygetwindow>=0.0.9
+
+# UI Automation & Overlay (for Voice Access features)
+pywinauto>=0.6.8     # Windows UI element detection
+PyQt6>=6.5.0         # Modern overlay UI (preferred)
+# PyQt5>=5.15.0      # Alternative if PyQt6 doesn't work
+screen-brightness-control>=0.22.0
+
+# Screen Context (visual AI / screen sharing)
+Pillow>=10.0.0
+pytesseract>=0.3.10  # Optional: requires Tesseract system install
+easyocr>=1.7.0       # Fallback OCR (no system install needed)
+opencv-python>=4.8.0 # Image processing for OCR and screen analysis
+
+# App Control (launch/close/switch applications)
+pywin32>=306
+psutil>=5.9.0
+
+# Interactive Web Interface (ChatGPT-like experience)
+flask>=3.0.0
+flask-socketio>=5.3.0
+flask-cors>=4.0.0
+python-socketio>=5.10.0
+eventlet>=0.35.0     # Async support for SocketIO
+
+# =============================================================================
+# VoxMind Daemon (always-on background service)
+# =============================================================================
+pystray>=0.19.0      # System tray icon
+Pillow>=10.0.0       # Icon creation for tray (already listed above)
+# pywin32>=306       # Windows API for hotkeys, clipboard, IPC (already listed)

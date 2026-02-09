@@ -120,3 +120,43 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Project-specific cache
+cache/
+data/analytics/
+
+# Cython generated files
+*.pyd
+*.c
+*.cpp
+
+# Secrets / credentials
+*.pem
+*.key
+secrets/
+
+# Docker
+.docker/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Local config overrides
+*.local.json
+.env.local

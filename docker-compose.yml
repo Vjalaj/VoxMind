@@ -1,12 +1,57 @@
 version: '3.8'
+
 services:
-  app:
+  # VoxMind API Server (headless, cross-platform)
+  api:
     build: .
-    image: voxmind-app:dev
+    image: voxmind-api:dev
+    container_name: voxmind-api
     ports:
       - "8000:8000"
     volumes:
       - .:/app:rw
+      - voxmind-cache:/app/cache
     environment:
       - PYTHONUNBUFFERED=1
-    command: ["python", "main.py"]
+      - VOXMIND_MODE=api
+      - VOXMIND_DEBUG=1
+    command: ["python", "-m", "uvicorn", "interface.server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Knowledge Engine (for heavy NLP/LLM tasks)
+  knowledge:
+    build: .
+    image: voxmind-knowledge:dev
+    container_name: voxmind-knowledge
+    ports:
+      - "8001:8001"
+    volumes:
+      - voxmind-cache:/app/cache
+    environment:
+      - PYTHONUNBUFFERED=1
+      - VOXMIND_MODE=knowledge
+    command: ["python", "-c", "from core.knowledge_engine import serve; serve(port=8001)"]
+    restart: unless-stopped
+    profiles:
+      - full  # Only start with docker-compose --profile full up
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: voxmind-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    profiles:
+      - full
+
+volumes:
+  voxmind-cache:
+  redis-data:

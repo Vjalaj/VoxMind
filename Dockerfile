@@ -6,14 +6,31 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install build deps only when needed, install requirements if present
-COPY requirements.txt ./
+# Install system dependencies for audio/display (headless mode)
 RUN apt-get update \
- && apt-get install -y --no-install-recommends build-essential gcc \
- && pip install --upgrade pip setuptools wheel \
- && if [ -s requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi \
- && apt-get purge -y --auto-remove build-essential gcc \
+ && apt-get install -y --no-install-recommends \
+    build-essential gcc \
+    # For pynput/keyboard support in headless
+    libx11-dev libxtst-dev \
+    # For audio processing
+    portaudio19-dev libsndfile1 \
+    # For screen capture (headless)
+    xvfb \
  && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt ./
+RUN pip install --upgrade pip setuptools wheel \
+ && if [ -s requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+
+# Install cross-platform dependencies
+RUN pip install --no-cache-dir \
+    pyperclip \
+    pynput \
+    plyer \
+    fastapi \
+    uvicorn[standard] \
+    websockets
 
 # Copy project
 COPY . .
@@ -23,5 +40,9 @@ RUN groupadd -r app && useradd --no-log-init -r -g app app \
  && chown -R app:app /app
 USER app
 
-# Default command — change to your app entrypoint (e.g. python -m jd.main)
-CMD ["python", "main.py"]
+# Expose API port
+EXPOSE 8000
+
+# Default: run the API server (headless mode)
+# For desktop mode, run on host OS directly
+CMD ["python", "-m", "uvicorn", "interface.server:app", "--host", "0.0.0.0", "--port", "8000"]

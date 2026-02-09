@@ -17,7 +17,7 @@ parser = AdvancedCommandParser()  # Week 2: Integrated Advanced Parser
 
 # converting text to speech
 def speak(text):
-    print(f"Jarvis: {text}")
+    print(f"VoxMind: {text}")
     engine.say(text)
     engine.runAndWait()
 
@@ -92,7 +92,7 @@ def proceed_command(command):
 
 
 if __name__ == "__main__":
-    speak("Initializing Jarvis (Week 2 Enhanced Mode)....")
+    speak("Initializing VoxMind (Week 2 Enhanced Mode)....")
 
     while True:
         print("Waiting for wake word...")
@@ -101,7 +101,7 @@ if __name__ == "__main__":
             with sr.Microphone() as source:
                 # Adjust for ambient noise for better accuracy
                 recognizer.adjust_for_ambient_noise(source, duration=0.5)
-                print("Listening for 'Jarvis'...")
+                print("Listening for 'VoxMind'...")
                 try:
                     audio = recognizer.listen(source, timeout=5, phrase_time_limit=5)
                     word = recognizer.recognize_google(audio)
@@ -111,8 +111,8 @@ if __name__ == "__main__":
                 except sr.UnknownValueError:
                     continue
             
-            # if jarvis is detected , activate and listen for command
-            if 'jarvis' in word.lower():
+            # if voxmind is detected , activate and listen for command
+            if 'voxmind' in word.lower():
                 speak("Yes, I'm listening.")
                 with sr.Microphone() as source:
                     recognizer.adjust_for_ambient_noise(source, duration=0.5)

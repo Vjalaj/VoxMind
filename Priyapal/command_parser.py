@@ -1,7 +1,7 @@
 """
 command_parser.py
 
-Text-only command parser for a Jarvis-like assistant.
+Text-only command parser for a VoxMind assistant.
 
 Responsibilities
 ----------------
@@ -33,7 +33,7 @@ Example intents
 
 Wake word
 ---------
-- If text starts with "jarvis", "hey jarvis", or "ok jarvis", that prefix
+- If text starts with "voxmind", "hey voxmind", or "ok voxmind", that prefix
   is stripped before parsing.
 - The caller (main.py, wake-word detector, etc.) should decide when to call
   parse_command; this file only handles text → {command, params}.
@@ -200,6 +200,163 @@ def _scroll_params(match: Match[str]) -> Dict[str, Any]:
     return {"direction": None}
 
 
+def _brightness_params(match: Match[str]) -> Dict[str, Any]:
+    """
+    Map brightness phrases to actions:
+    - up / down / set with level
+    """
+    text = match.group(0).lower()
+    
+    # Check for explicit level first
+    m = re.search(r"(\d{1,3})", text)
+    if m:
+        try:
+            level = int(m.group(1))
+            level = max(0, min(100, level))
+            return {"action": "set", "level": level}
+        except Exception:
+            pass
+    
+    # Check for max/min
+    if "max" in text or "full" in text:
+        return {"action": "set", "level": 100}
+    if "min" in text:
+        return {"action": "set", "level": 0}
+    
+    # Check for directional commands
+    if any(k in text for k in ("up", "increase", "raise", "higher", "brighter")):
+        return {"action": "up", "level": None}
+    if any(k in text for k in ("down", "decrease", "lower", "dimmer", "dim")):
+        return {"action": "down", "level": None}
+    
+    if "set" in text:
+        return {"action": "set", "level": None}
+    
+    return {"action": None, "level": None}
+
+
+def _input_control_params(match: Match[str]) -> Dict[str, Any]:
+    """
+    Extract input control (mouse/keyboard) command parameters.
+    Inspired by Microsoft Voice Access and Google Voice Access.
+    """
+    text = match.group(0).lower()
+    
+    # Click commands
+    if "triple click" in text or "click three" in text:
+        return {"type": "mouse_click", "button": "left", "clicks": 3}
+    if "double click" in text or "click twice" in text:
+        return {"type": "mouse_click", "button": "left", "clicks": 2}
+    if "right click" in text or "secondary click" in text:
+        return {"type": "mouse_click", "button": "right", "clicks": 1}
+    if "middle click" in text:
+        return {"type": "mouse_click", "button": "middle", "clicks": 1}
+    if re.search(r"\bclick\b", text) and not re.search(r"\bclick\s+\d+", text):
+        return {"type": "mouse_click", "button": "left", "clicks": 1}
+    
+    # Grid click
+    grid_match = re.search(r"\bclick\s+(\d{1,2})\b", text)
+    if grid_match:
+        return {"type": "grid_click", "cell": int(grid_match.group(1))}
+    
+    # Mouse grid
+    if "mouse grid" in text or "show grid" in text:
+        return {"type": "mouse_grid", "action": "show"}
+    if "close grid" in text or "hide grid" in text:
+        return {"type": "mouse_grid", "action": "hide"}
+    
+    # Mouse move directional
+    dir_match = re.search(
+        r"move\s+(?:mouse\s+)?(?:cursor\s+)?(up|down|left|right)"
+        r"(?:\s+(\d+))?", text
+    )
+    if dir_match:
+        return {
+            "type": "mouse_move",
+            "direction": dir_match.group(1),
+            "distance": int(dir_match.group(2)) if dir_match.group(2) else None
+        }
+    
+    # Mouse move to coordinates
+    coord_match = re.search(r"move\s+(?:mouse\s+)?(?:to\s+)?(\d+)\s*,?\s*(\d+)", text)
+    if coord_match:
+        return {
+            "type": "mouse_move",
+            "x": int(coord_match.group(1)),
+            "y": int(coord_match.group(2))
+        }
+    
+    # Type text
+    type_match = re.search(r"type\s+(.+)", text)
+    if type_match:
+        return {"type": "type_text", "text": type_match.group(1)}
+    
+    # Press key with modifiers
+    hotkey_match = re.search(
+        r"press\s+(control|ctrl|alt|shift|win)\s+(\w+)", text
+    )
+    if hotkey_match:
+        modifier = hotkey_match.group(1)
+        if modifier == "control":
+            modifier = "ctrl"
+        return {"type": "hotkey", "modifiers": [modifier], "key": hotkey_match.group(2)}
+    
+    # Press single key
+    key_match = re.search(r"press\s+(\w+)", text)
+    if key_match:
+        return {"type": "press_key", "key": key_match.group(1)}
+    
+    # Common keyboard actions
+    if re.search(r"\bcopy\b", text):
+        return {"type": "hotkey", "modifiers": ["ctrl"], "key": "c"}
+    if re.search(r"\bpaste\b", text):
+        return {"type": "hotkey", "modifiers": ["ctrl"], "key": "v"}
+    if re.search(r"\bcut\b", text):
+        return {"type": "hotkey", "modifiers": ["ctrl"], "key": "x"}
+    if re.search(r"\bundo\b", text):
+        return {"type": "hotkey", "modifiers": ["ctrl"], "key": "z"}
+    if re.search(r"\bredo\b", text):
+        return {"type": "hotkey", "modifiers": ["ctrl"], "key": "y"}
+    if re.search(r"\bselect all\b", text):
+        return {"type": "hotkey", "modifiers": ["ctrl"], "key": "a"}
+    
+    # Screenshot
+    if "screenshot" in text:
+        return {"type": "window", "action": "screenshot"}
+    
+    # Switch window
+    if "switch window" in text:
+        return {"type": "window", "action": "switch"}
+    
+    # Show desktop
+    if "show desktop" in text:
+        return {"type": "window", "action": "show_desktop"}
+    
+    return {"type": "input_control"}
+
+
+def _voice_model_params(match: Match[str]) -> Dict[str, Any]:
+    """
+    Extract voice model/persona selection parameters.
+    Supports: voice jarvis, switch to friday, use sophia voice, etc.
+    """
+    text = match.group(0).lower()
+    
+    # Available voice personas
+    voices = ['jarvis', 'vision', 'edith', 'elisa', 'sophia', 'friday']
+    
+    # Check for list voices command
+    if any(k in text for k in ('list voice', 'show voice', 'available voice', 'what voice')):
+        return {"action": "list"}
+    
+    # Extract voice name
+    for voice in voices:
+        if voice in text:
+            return {"action": "set", "voice": voice}
+    
+    return {"action": "list"}
+
+
 # -------------------- Normalization --------------------
 
 
@@ -227,10 +384,15 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         _browser_params,
     ),
 
-    # Search
+    # Search - ONLY explicit web search commands
+    # This prevents "find X" from opening browser, keeps it for explicit "search google for X"
     (
         re.compile(
-            r"\b(?:search for|search|google|look up|lookup|find|find me|look for)\b\s+(?P<query>[^\n\r]+)",
+            r"\b(?:search\s+(?:google|bing|online|the\s+web|on\s+google|on\s+bing)\s+(?:for\s+)?|"
+            r"google\s+(?:for\s+)?|"
+            r"web\s+search\s+(?:for\s+)?|"
+            r"search\s+for\s+.+\s+(?:on\s+google|online|on\s+the\s+web)|"
+            r"look\s+up\s+.+\s+(?:on\s+google|online))\s*(?P<query>[^\n\r]+)",
             re.I,
         ),
         "search",
@@ -266,6 +428,17 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         re.compile(r"\b(?:volume|sound|audio|mute|unmute)\b.*", re.I),
         "control_volume",
         _volume_params,
+    ),
+
+    # Brightness / screen
+    (
+        re.compile(
+            r"\b(?:brightness|screen brightness|display brightness|"
+            r"brighter|dimmer|dim|brighten)\b.*",
+            re.I,
+        ),
+        "control_brightness",
+        _brightness_params,
     ),
 
     # App control
@@ -329,6 +502,52 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         "scroll",
         _scroll_params,
     ),
+
+    # Input control (Voice Access style - mouse/keyboard automation)
+    (
+        re.compile(
+            r"(?:"
+            # Mouse clicks
+            r"\b(?:click|double click|triple click|right click|middle click)\b|"
+            # Mouse movement
+            r"\b(?:move\s+(?:mouse|cursor)|mouse grid|show grid|close grid|hide grid)\b|"
+            # Keyboard type/press
+            r"\btype\s+\w+|"
+            r"\bpress\s+\w+|"
+            # Common actions
+            r"\b(?:copy|paste|cut|undo|redo|select all)\b|"
+            # Window management
+            r"\b(?:switch window|show desktop|take screenshot|screenshot)\b"
+            r").*",
+            re.I,
+        ),
+        "input_control",
+        _input_control_params,
+    ),
+
+    # Voice model/persona selection
+    (
+        re.compile(
+            r"(?:"
+            # Direct voice commands
+            r"\b(?:voice|persona)\s+(?:jarvis|vision|edith|elisa|sophia|friday)\b|"
+            # Switch to voice
+            r"\bswitch\s+(?:to\s+)?(?:jarvis|vision|edith|elisa|sophia|friday)(?:\s+voice)?\b|"
+            # Use voice
+            r"\buse\s+(?:jarvis|vision|edith|elisa|sophia|friday)(?:\s+voice)?\b|"
+            # Change voice
+            r"\bchange\s+(?:voice\s+)?(?:to\s+)?(?:jarvis|vision|edith|elisa|sophia|friday)\b|"
+            # Set voice
+            r"\bset\s+voice\s+(?:to\s+)?(?:jarvis|vision|edith|elisa|sophia|friday)\b|"
+            # List voices
+            r"\b(?:list|show|what)\s+(?:available\s+)?voices?\b|"
+            r"\bavailable\s+voices?\b"
+            r")",
+            re.I,
+        ),
+        "voice_model",
+        _voice_model_params,
+    ),
 ]
 
 
@@ -348,6 +567,10 @@ KEYWORD_INDEX = {
     "time": ("get_time",),
     "date": ("get_time",),
     "today": ("get_time",),
+    "brightness": ("control_brightness",),
+    "brighter": ("control_brightness",),
+    "dimmer": ("control_brightness",),
+    "dim": ("control_brightness",),
     "shutdown": ("system_power",),
     "shut down": ("system_power",),
     "power off": ("system_power",),
@@ -398,6 +621,40 @@ KEYWORD_INDEX = {
     "down": ("scroll",),
     "top": ("scroll",),
     "bottom": ("scroll",),
+
+    # Input control (Voice Access style)
+    "click": ("input_control",),
+    "double click": ("input_control",),
+    "triple click": ("input_control",),
+    "right click": ("input_control",),
+    "middle click": ("input_control",),
+    "mouse": ("input_control",),
+    "cursor": ("input_control",),
+    "move mouse": ("input_control",),
+    "mouse grid": ("input_control",),
+    "grid": ("input_control",),
+    "type": ("input_control",),
+    "press": ("input_control",),
+    "copy": ("input_control",),
+    "paste": ("input_control",),
+    "cut": ("input_control",),
+    "undo": ("input_control",),
+    "redo": ("input_control",),
+    "select all": ("input_control",),
+    "switch window": ("input_control",),
+    "show desktop": ("input_control",),
+    "screenshot": ("input_control",),
+    "drag": ("input_control",),
+
+    # Voice model/persona selection
+    "voice": ("voice_model",),
+    "persona": ("voice_model",),
+    "jarvis": ("voice_model",),
+    "vision": ("voice_model",),
+    "edith": ("voice_model",),
+    "elisa": ("voice_model",),
+    "sophia": ("voice_model",),
+    "friday": ("voice_model",),
 }
 
 
@@ -415,7 +672,7 @@ def parse_command(text: str) -> Dict[str, Any]:
         return {"command": "unknown", "params": {}}
 
     # Strip assistant wake words at the start
-    for wake in ("jarvis ", "hey jarvis ", "ok jarvis "):
+    for wake in ("voxmind ", "hey voxmind ", "ok voxmind "):
         if text.startswith(wake):
             text = text[len(wake):].lstrip()
             break
@@ -454,7 +711,15 @@ def parse_command(text: str) -> Dict[str, Any]:
     if "time" in text or "date" in text:
         return {"command": "get_time", "params": {}}
 
-    if text:
-        return {"command": "search", "params": {"query": text}}
+    # Only search when explicitly requested with "search" keyword
+    # Don't auto-search for unrecognized commands
+    if text.startswith("search ") or text.startswith("search for ") or text.startswith("google ") or text.startswith("look up "):
+        query = text
+        for prefix in ("search for ", "search ", "google ", "look up "):
+            if text.startswith(prefix):
+                query = text[len(prefix):].strip()
+                break
+        if query:
+            return {"command": "search", "params": {"query": query}}
 
     return {"command": "unknown", "params": {}}

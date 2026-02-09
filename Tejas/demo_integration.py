@@ -1,6 +1,13 @@
 """Integration example showing enhanced command parser usage in VoxMind system."""
 import logging
+import sys
+import os
 from typing import Dict, Any
+
+# Add the project root to path
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
 
 # Configure logging for command parser
 logging.basicConfig(
@@ -10,7 +17,16 @@ logging.basicConfig(
 
 def demo_enhanced_parser():
     """Demonstrate the enhanced command parser capabilities."""
-    from command_parser import parse_command, get_supported_commands
+    from Priyapal.command_parser import parse_command
+    
+    # Define supported commands locally
+    def get_supported_commands():
+        return {
+            'browser': ['open browser', 'launch chrome'],
+            'time': ['what time is it', 'current time'],
+            'search': ['search for X', 'google X'],
+            'music': ['play music', 'pause music'],
+        }
     
     print("=== VoxMind Enhanced Command Parser Demo ===\n")
     
@@ -85,8 +101,8 @@ def integration_example():
 # In main.py, replace the basic parser import:
 # from Tejas.command_parser import parse_command
 
-# With enhanced version:
-from Tejas.command_parser import parse_command
+# With canonical version from Priyapal:
+from Priyapal.command_parser import parse_command
 
 # Enable logging to see which patterns match:
 import logging

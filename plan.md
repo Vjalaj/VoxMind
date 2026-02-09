@@ -1,7 +1,7 @@
-# AI Assistant Plan: VoxMind (Jarvis-like Assistant)
+# AI Assistant Plan: VoxMind (Intelligent Voice Assistant)
 
 ## Overview
-This plan outlines the development of VoxMind, an AI assistant that provides full voice-controlled laptop management, web search capabilities, data retrieval, and comprehensive assistance similar to Jarvis from Iron Man. The system will be built using Python and leverage various libraries for voice interaction, natural language processing, system control, and web automation.
+This plan outlines the development of VoxMind, an AI assistant that provides full voice-controlled laptop management, web search capabilities, data retrieval, and comprehensive assistance an intelligent voice-controlled assistant. The system will be built using Python and leverage various libraries for voice interaction, natural language processing, system control, and web automation.
 
 ## Core Features
 - **Voice Recognition**: Listen to user commands via microphone
