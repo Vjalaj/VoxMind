@@ -9,11 +9,13 @@ import sys
 # Add current directory to path so we can import local modules
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from advanced_command_parser import AdvancedCommandParser
+from response_generation import ResponseGenerationBridge
 
 # Initialize components
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
 parser = AdvancedCommandParser()  # Week 2: Integrated Advanced Parser
+response_bridge = ResponseGenerationBridge()
 
 # converting text to speech
 def speak(text):
@@ -72,6 +74,8 @@ def execute_action(result):
         
     else:
         speak("I didn't understand that command yet.")
+
+    response_bridge.notify(result, parser.context)
 
 def proceed_command(command):
     if not command:

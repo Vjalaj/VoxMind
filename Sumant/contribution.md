@@ -95,6 +95,29 @@
 
 ---
 
+## Week 3: Accuracy, Visibility & Collaboration
+
+### Status: Completed
+
+### What I did:
+- Implemented intent embeddings caching (`intent_embeddings_cache.pkl`) so the parser boots faster and keeps the fine-tuned state between runs.
+- Added Hindi/English intent phrases and bias adjustments, enabling multi-language parsing with higher confidence thresholds.
+- Reworked the NLP fallback to score against every exemplar instead of only the mean embedding, mimicking a lightweight fine-tuning stage.
+- Built a `ResponseGenerationBridge` that logs parsed intents/context so the response-generation team can consume the same signalstream and react in sync with the parser.
+
+### Resources used:
+- Sentence-BERT (`all-MiniLM-L6-v2`) documentation
+- Local logging + persistence utilities for lightweight cross-module integration
+
+### Challenges faced:
+1. **Startup latency**: Sentence-BERT takes time to initialize.
+   - Solution: Cache embeddings to disk and reload before decoding to skip repeated computation.
+2. **Hindi phrase coverage**: Hindi commands were previously ignored.
+   - Solution: Augmented the intent vocabulary with Hindi sentences and nudged the confidence to favor detected Hindi text.
+3. **Visibility for the response team**: We had no shared signal.
+   - Solution: Created a simple bridge that writes structured payloads for the Response Generation team and logs the same for debugging.
+
+
 ## Contact
 - Tech Lead: Jalaj
 - Questions: Team Whatsapp

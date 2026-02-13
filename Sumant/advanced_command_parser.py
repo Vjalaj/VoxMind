@@ -6,10 +6,12 @@ Week 2: Advanced NLP Integration & Parser Enhancement
 - Parameter validation
 - NLP Intent Classification with cache
 """
-from typing import Dict, Any, List, Optional, Tuple, Union
+from typing import Dict, Any, List, Optional
 import re
 import logging
 import threading
+import pickle
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -40,13 +42,24 @@ class AdvancedCommandParser:
         self.context = {"last_intent": None, "last_entities": {}}
         self.model = None
         self.intent_embeddings = {}
+        self.example_embeddings: Dict[str, Any] = {}
         self.intent_examples = self._get_intent_examples()
+        self.cache_file = Path(__file__).with_name("intent_embeddings_cache.pkl")
+        self.intent_confidence_adjustments = {
+            'search': 1.03,
+            'browser': 1.02,
+            'app_control': 1.01,
+            'volume': 1.01,
+            'utility': 1.01
+        }
+        self._augment_language_examples()
         
         if NLP_AVAILABLE:
             try:
-                # Load model once
                 self.model = SentenceTransformer('all-MiniLM-L6-v2')
-                self._compute_embeddings()
+                if not self._load_cached_embeddings():
+                    self._compute_embeddings()
+                    self._save_embedding_cache()
                 logger.info("NLP Engine Initialized Successfully")
             except Exception as e:
                 logger.error(f"Failed to initialize NLP model: {e}")
@@ -101,10 +114,66 @@ class AdvancedCommandParser:
 
     def _compute_embeddings(self):
         """Compute and cache embeddings for intents"""
+        self.intent_embeddings.clear()
+        self.example_embeddings.clear()
         for intent, examples in self.intent_examples.items():
-            embeddings = self.model.encode(examples)
-            # Store mean embedding for the intent
+            if not examples:
+                continue
+            embeddings = self.model.encode(examples, convert_to_numpy=True)
+            self.example_embeddings[intent] = embeddings
             self.intent_embeddings[intent] = np.mean(embeddings, axis=0)
+
+    def _augment_language_examples(self):
+        """Add Hindi variants for multi-language coverage"""
+        hindi_variants = {
+            "browser": ["ब्राउज़र खोलो", "क्रोम खोलो"],
+            "search": ["खोजो", "मुझे जानकारी दो"],
+            "system": ["सिस्टम बंद करो", "रीस्टार्ट करो"],
+            "volume": ["वॉल्यूम बढ़ाओ", "आवाज़ कम करो"],
+            "media": ["गाना चलाओ", "म्यूजिक रोको"],
+            "app_control": ["नोटपैड खोलो", "कैलकुलेटर शुरू करो"],
+            "utility": ["समय बताओ", "मौसम क्या है"],
+            "communication": ["ईमेल भेजो", "संदेश पढ़ो"]
+        }
+        for intent, variants in hindi_variants.items():
+            existing = self.intent_examples.get(intent, [])
+            for phrase in variants:
+                if phrase not in existing:
+                    existing.append(phrase)
+            self.intent_examples[intent] = existing
+
+    def _load_cached_embeddings(self) -> bool:
+        """Load cached embeddings to speed up startup"""
+        if not self.cache_file.exists():
+            return False
+        try:
+            with self.cache_file.open('rb') as handle:
+                data = pickle.load(handle)
+            self.intent_embeddings = {intent: np.asarray(emb) for intent, emb in data['intent_embeddings'].items()}
+            self.example_embeddings = {intent: np.asarray(emb) for intent, emb in data['example_embeddings'].items()}
+            logger.info("Loaded intent embeddings from cache.")
+            return True
+        except Exception as exc:
+            logger.warning(f"Failed to load embedding cache: {exc}")
+            return False
+
+    def _save_embedding_cache(self):
+        """Persist embeddings to disk"""
+        try:
+            payload = {
+                'intent_embeddings': self.intent_embeddings,
+                'example_embeddings': self.example_embeddings
+            }
+            with self.cache_file.open('wb') as handle:
+                pickle.dump(payload, handle)
+            logger.info("Intent embeddings cached to disk.")
+        except Exception as exc:
+            logger.warning(f"Failed to write embedding cache: {exc}")
+
+    def _detect_language(self, text: str) -> str:
+        if any('\u0900' <= ch <= '\u097F' for ch in text):
+            return 'hindi'
+        return 'english'
 
     def parse(self, text: str) -> List[Dict[str, Any]]:
         """
@@ -212,19 +281,31 @@ class AdvancedCommandParser:
         names = []
         scores = []
         
-        for intent, intent_embedding in self.intent_embeddings.items():
-            # Cosine similarity
-            similarity = np.dot(text_embedding, intent_embedding) / (
-                np.linalg.norm(text_embedding) * np.linalg.norm(intent_embedding)
-            )
-            names.append(intent)
-            scores.append(similarity)
-            
-        max_idx = np.argmax(scores)
-        return {
-            'type': names[max_idx],
-            'confidence': float(scores[max_idx])
-        }
+        best_match = {'type': 'unknown', 'confidence': 0.0}
+        for intent, embeddings in self.example_embeddings.items():
+            if embeddings.size == 0:
+                continue
+            sims = self._cosine_similarity(text_embedding, embeddings)
+            max_score = float(np.max(sims))
+            if max_score > best_match['confidence']:
+                best_match = {'type': intent, 'confidence': max_score}
+        language = self._detect_language(text)
+        best_match['confidence'] = self._adjust_confidence(best_match['type'], best_match['confidence'], language)
+        return best_match
+
+    def _cosine_similarity(self, vector: np.ndarray, matrix: np.ndarray) -> np.ndarray:
+        vector_norm = np.linalg.norm(vector)
+        if vector_norm == 0:
+            vector_norm = 1e-8
+        matrix_norms = np.linalg.norm(matrix, axis=1)
+        matrix_norms[matrix_norms == 0] = 1e-8
+        return np.dot(matrix, vector) / (matrix_norms * vector_norm)
+
+    def _adjust_confidence(self, intent: str, confidence: float, language: str) -> float:
+        bias = 0.05 if language == 'hindi' else 0.0
+        adjustment = self.intent_confidence_adjustments.get(intent, 1.0)
+        adjusted = confidence * adjustment + bias
+        return float(min(1.0, max(0.0, adjusted)))
 
     def _extract_entities(self, text: str, intent: str) -> Dict[str, Any]:
         """
