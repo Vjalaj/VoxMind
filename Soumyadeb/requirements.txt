@@ -1,6 +1,8 @@
-sounddevice
-soundfile
-numpy
-noisereduce
+speechrecognition
+pyaudio
+pyttsx3
 requests
-pytest
+noisereduce
+numpy
+scipy
+soundfile
