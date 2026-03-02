@@ -357,6 +357,89 @@ def _voice_model_params(match: Match[str]) -> Dict[str, Any]:
     return {"action": "list"}
 
 
+def _file_ops_params(match: Match[str]) -> Dict[str, Any]:
+    """
+    Extract file/directory operation parameters.
+    Supports: copy, move, rename, delete, create folder, list folder, etc.
+    """
+    text = match.group(0).lower()
+    groups = match.groupdict() if hasattr(match, 'groupdict') else {}
+    
+    # Determine operation type
+    if any(k in text for k in ('copy', 'duplicate')):
+        action = 'copy'
+    elif any(k in text for k in ('move', 'relocate')):
+        action = 'move'
+    elif any(k in text for k in ('rename', 'change name')):
+        action = 'rename'
+    elif any(k in text for k in ('delete', 'remove', 'trash', 'erase')):
+        action = 'delete'
+    elif any(k in text for k in ('create folder', 'make folder', 'new folder', 'mkdir', 'create directory', 'make directory', 'new directory')):
+        action = 'create_folder'
+    elif any(k in text for k in ('list folder', 'list directory', 'show folder', 'show directory', 'folder contents', 'directory contents', 'list files', 'show files', 'what files', "what's in", "what is in")):
+        action = 'list_folder'
+    elif any(k in text for k in ('current folder', 'current directory', 'where am i', 'working directory', 'pwd', 'current path')):
+        action = 'current_dir'
+    elif 'folder size' in text or 'directory size' in text or 'size of' in text:
+        action = 'folder_size'
+    else:
+        action = 'unknown'
+    
+    # Extract source and dest from named groups first
+    source = None
+    dest = None
+    
+    # Try named groups from the pattern
+    for key in ['src1', 'src2', 'src3']:
+        if groups.get(key):
+            source = groups[key].strip().strip('"\'')
+            break
+    for key in ['dst1', 'dst2', 'dst3']:
+        if groups.get(key):
+            dest = groups[key].strip().strip('"\'')
+            break
+    
+    # Try other named groups for single-path operations
+    if not source:
+        for key in ['del_target', 'mkdir_target', 'mkdir_target2', 'list_target', 
+                    'list_in_target', 'show_target', 'whats_in_target', 
+                    'size_target', 'size_of_target']:
+            if groups.get(key):
+                source = groups[key].strip().strip('"\'')
+                break
+    
+    # Fallback: extract using regex patterns
+    if not source and not dest:
+        # Pattern: "copy X to Y", "move X to Y", "rename X to Y"
+        to_match = re.search(r'(?:copy|move|rename|relocate)\s+(?:the\s+)?(?:file\s+|folder\s+|directory\s+)?(.+?)\s+to\s+(.+)', text)
+        if to_match:
+            source = to_match.group(1).strip().strip('"\'')
+            dest = to_match.group(2).strip().strip('"\'')
+        else:
+            # Pattern: "list files in X" - specific handling
+            in_match = re.search(r'(?:list files in|what\'s in|what is in)\s+(?:the\s+)?(.+)', text)
+            if in_match:
+                source = in_match.group(1).strip().strip('"\'')
+            else:
+                # Pattern: "delete file/folder X", "create folder X", "list folder X"
+                path_match = re.search(
+                    r'(?:delete|remove|trash|erase)\s+(?:the\s+)?(?:file|folder|directory)\s+(.+)|'
+                    r'(?:create folder|make folder|new folder|mkdir|'
+                    r'create directory|make directory|new directory|list folder|list directory|'
+                    r'show folder|show directory|folder contents|directory contents|list files|'
+                    r'show files|folder size|directory size|size of)\s+(?:the\s+)?(.+)',
+                    text
+                )
+                if path_match:
+                    source = (path_match.group(1) or path_match.group(2) or '').strip().strip('"\'')
+    
+    return {
+        "action": action,
+        "source": source if source else None,
+        "dest": dest if dest else None
+    }
+
+
 # -------------------- Normalization --------------------
 
 
@@ -501,6 +584,38 @@ PATTERNS: List[Tuple[re.Pattern[str], str, ParamsFn]] = [
         ),
         "scroll",
         _scroll_params,
+    ),
+
+    # File/directory operations (shutil-style) - MUST BE BEFORE input_control since "copy" conflicts
+    (
+        re.compile(
+            r"(?:"
+            # Copy/move/rename operations - require "to" to distinguish from clipboard copy
+            r"\b(?:copy|duplicate)\s+(?:the\s+)?(?:file\s+|folder\s+|directory\s+)?(?P<src1>[^\s]+)\s+to\s+(?P<dst1>.+)|"
+            r"\b(?:move|relocate)\s+(?:the\s+)?(?:file\s+|folder\s+|directory\s+)?(?P<src2>[^\s]+)\s+to\s+(?P<dst2>.+)|"
+            r"\b(?:rename|change name of)\s+(?:the\s+)?(?:file\s+|folder\s+|directory\s+)?(?P<src3>[^\s]+)\s+to\s+(?P<dst3>.+)|"
+            # Delete operations - file/folder/directory required
+            r"\b(?:delete|remove|trash|erase)\s+(?:the\s+)?(?:file|folder|directory)\s+(?P<del_target>.+)|"
+            # Create folder  
+            r"\b(?:create|make|new)\s+(?:a\s+)?(?:folder|directory)\s+(?P<mkdir_target>.+)|"
+            r"\bmkdir\s+(?P<mkdir_target2>.+)|"
+            # List folder contents
+            r"\blist\s+(?:the\s+)?(?:folder|directory)\s+(?P<list_target>.+)|"
+            r"\blist\s+files\s+in\s+(?P<list_in_target>.+)|"
+            r"\bshow\s+(?:the\s+)?(?:folder|directory)\s+contents\s+(?P<show_target>.+)|"
+            r"\bwhat(?:'s| is)?\s+in\s+(?:the\s+)?(?:folder|directory)?\s*(?P<whats_in_target>.+)|"
+            # Current directory
+            r"\b(?:current|working)\s+(?:folder|directory|path)\b|"
+            r"\bwhere\s+am\s+i\b|"
+            r"\bpwd\b|"
+            # Folder size
+            r"\b(?:folder|directory)\s+size\s+(?P<size_target>.+)|"
+            r"\bsize\s+of\s+(?:the\s+)?(?:folder|directory)\s+(?P<size_of_target>.+)"
+            r")",
+            re.I,
+        ),
+        "file_ops",
+        _file_ops_params,
     ),
 
     # Input control (Voice Access style - mouse/keyboard automation)
@@ -655,6 +770,35 @@ KEYWORD_INDEX = {
     "elisa": ("voice_model",),
     "sophia": ("voice_model",),
     "friday": ("voice_model",),
+
+    # File/directory operations
+    "copy": ("file_ops", "input_control"),
+    "duplicate": ("file_ops",),
+    "move": ("file_ops",),
+    "relocate": ("file_ops",),
+    "rename": ("file_ops",),
+    "delete": ("file_ops",),
+    "remove": ("file_ops",),
+    "trash": ("file_ops",),
+    "erase": ("file_ops",),
+    "create folder": ("file_ops",),
+    "make folder": ("file_ops",),
+    "new folder": ("file_ops",),
+    "mkdir": ("file_ops",),
+    "create directory": ("file_ops",),
+    "make directory": ("file_ops",),
+    "list folder": ("file_ops",),
+    "list directory": ("file_ops",),
+    "list files": ("file_ops",),
+    "folder contents": ("file_ops",),
+    "directory contents": ("file_ops",),
+    "current folder": ("file_ops",),
+    "current directory": ("file_ops",),
+    "working directory": ("file_ops",),
+    "where am i": ("file_ops",),
+    "pwd": ("file_ops",),
+    "folder size": ("file_ops",),
+    "directory size": ("file_ops",),
 }
 
 
