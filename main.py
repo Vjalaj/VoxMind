@@ -2117,6 +2117,162 @@ def execute_app_command(parsed: dict) -> str:
         return Vox.get_error_message(f"App control failed: {str(e)}")
 
 
+def execute_file_ops_command(params: dict) -> str:
+    """
+    Execute file/directory operations using shutil and os.
+    Supports: copy, move, rename, delete, create_folder, list_folder, current_dir, folder_size.
+    """
+    import shutil
+    import os
+    from pathlib import Path
+    
+    action = params.get('action', 'unknown')
+    source = params.get('source')
+    dest = params.get('dest')
+    
+    # Expand user paths (~) and environment variables
+    def expand_path(p):
+        if not p:
+            return None
+        p = os.path.expanduser(p)
+        p = os.path.expandvars(p)
+        return os.path.abspath(p)
+    
+    source_path = expand_path(source) if source else None
+    dest_path = expand_path(dest) if dest else None
+    
+    try:
+        if action == 'copy':
+            if not source_path:
+                return "Please specify what to copy. Say 'copy <file/folder> to <destination>'."
+            if not dest_path:
+                return "Please specify where to copy. Say 'copy <file/folder> to <destination>'."
+            if not os.path.exists(source_path):
+                return f"Cannot find '{source}'. Please check the path."
+            
+            if os.path.isdir(source_path):
+                shutil.copytree(source_path, dest_path)
+                return f"Copied folder '{source}' to '{dest}'."
+            else:
+                shutil.copy2(source_path, dest_path)
+                return f"Copied file '{source}' to '{dest}'."
+        
+        elif action == 'move':
+            if not source_path:
+                return "Please specify what to move. Say 'move <file/folder> to <destination>'."
+            if not dest_path:
+                return "Please specify where to move. Say 'move <file/folder> to <destination>'."
+            if not os.path.exists(source_path):
+                return f"Cannot find '{source}'. Please check the path."
+            
+            shutil.move(source_path, dest_path)
+            return f"Moved '{source}' to '{dest}'."
+        
+        elif action == 'rename':
+            if not source_path:
+                return "Please specify what to rename. Say 'rename <file/folder> to <newname>'."
+            if not dest_path:
+                return "Please specify the new name. Say 'rename <file/folder> to <newname>'."
+            if not os.path.exists(source_path):
+                return f"Cannot find '{source}'. Please check the path."
+            
+            # If dest is just a name (not a path), keep in same directory
+            if not os.path.dirname(dest):
+                dest_path = os.path.join(os.path.dirname(source_path), dest)
+            
+            os.rename(source_path, dest_path)
+            return f"Renamed '{source}' to '{dest}'."
+        
+        elif action == 'delete':
+            if not source_path:
+                return "Please specify what to delete. Say 'delete <file/folder>'."
+            if not os.path.exists(source_path):
+                return f"Cannot find '{source}'. Nothing to delete."
+            
+            if os.path.isdir(source_path):
+                shutil.rmtree(source_path)
+                return f"Deleted folder '{source}' and all its contents."
+            else:
+                os.remove(source_path)
+                return f"Deleted file '{source}'."
+        
+        elif action == 'create_folder':
+            if not source_path:
+                return "Please specify the folder name. Say 'create folder <name>'."
+            
+            os.makedirs(source_path, exist_ok=True)
+            return f"Created folder '{source}'."
+        
+        elif action == 'list_folder':
+            target = source_path or os.getcwd()
+            if not os.path.exists(target):
+                return f"Cannot find folder '{source}'."
+            if not os.path.isdir(target):
+                return f"'{source}' is not a folder."
+            
+            items = os.listdir(target)
+            if not items:
+                return f"The folder '{source or 'current directory'}' is empty."
+            
+            # Separate files and folders
+            folders = [f + '/' for f in items if os.path.isdir(os.path.join(target, f))]
+            files = [f for f in items if os.path.isfile(os.path.join(target, f))]
+            
+            result_parts = []
+            if folders:
+                result_parts.append(f"Folders: {', '.join(folders[:10])}")
+                if len(folders) > 10:
+                    result_parts.append(f"... and {len(folders) - 10} more folders")
+            if files:
+                result_parts.append(f"Files: {', '.join(files[:10])}")
+                if len(files) > 10:
+                    result_parts.append(f"... and {len(files) - 10} more files")
+            
+            return '. '.join(result_parts)
+        
+        elif action == 'current_dir':
+            cwd = os.getcwd()
+            return f"Current directory: {cwd}"
+        
+        elif action == 'folder_size':
+            target = source_path or os.getcwd()
+            if not os.path.exists(target):
+                return f"Cannot find '{source}'."
+            
+            if os.path.isfile(target):
+                size = os.path.getsize(target)
+            else:
+                size = sum(
+                    os.path.getsize(os.path.join(dirpath, f))
+                    for dirpath, _, filenames in os.walk(target)
+                    for f in filenames
+                )
+            
+            # Format size
+            if size < 1024:
+                size_str = f"{size} bytes"
+            elif size < 1024 * 1024:
+                size_str = f"{size / 1024:.1f} KB"
+            elif size < 1024 * 1024 * 1024:
+                size_str = f"{size / (1024 * 1024):.1f} MB"
+            else:
+                size_str = f"{size / (1024 * 1024 * 1024):.2f} GB"
+            
+            return f"Size of '{source or 'current directory'}': {size_str}"
+        
+        else:
+            return f"I don't know how to perform that file operation. Try 'copy', 'move', 'rename', 'delete', 'create folder', 'list folder', or 'current directory'."
+    
+    except PermissionError:
+        return f"Permission denied. I can't access '{source}'."
+    except FileNotFoundError:
+        return f"File or folder not found: '{source}'."
+    except FileExistsError:
+        return f"'{dest}' already exists. Please choose a different name."
+    except Exception as e:
+        return f"File operation failed: {str(e)}"
+
+
 def execute_command(parsed):
     """Execute the parsed command and return response."""
     cmd = parsed.get('command', 'unknown')
@@ -2679,6 +2835,10 @@ def execute_command(parsed):
         if success:
             return message
         return f"Couldn't complete that action: {message}"
+    
+    elif cmd == 'file_ops':
+        # Handle file/directory operations (shutil-style)
+        return execute_file_ops_command(parsed.get('params', {}))
     
     elif cmd == 'daemon':
         # Start VoxMind as a background daemon
